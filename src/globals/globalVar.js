@@ -4,6 +4,7 @@ import React from "react";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
   defaultUrl: "http://localhost:8000/index.php",
+  users: [],
 });
 
 // const [count, setCount] = useGlobalState('url');

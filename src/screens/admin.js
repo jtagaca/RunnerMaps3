@@ -42,7 +42,9 @@ const Rooms = [];
 
 function Admin() {
   const url = useGlobalState("defaultUrl");
+  const users = useGlobalState("users");
   var currentUrl = url[0];
+  var currentUsers = users[0];
   var array = [];
 
   const [allstudentlist, setAllStudentlist] = useState([]);
@@ -78,20 +80,22 @@ function Admin() {
       } else {
         // alert("Register Successful");
         // console.log(res.data[0]);
+        setGlobalState("users", res.data);
+
         array = [];
         array = res.data;
         // console.log(res.data);
         // works
         temp = res.data;
-        // setAllStudentlist(temp);
+        setAllStudentlist(temp);
         // works
-        // console.log(temp);
+        console.log(temp);
         // returns an empty array
-        // console.log(allstudentlist);
+        console.log(allstudentlist);
       }
     });
 
-    console.log(temp);
+    // console.log(temp);
     // Axios.post(currentUrl, {
     //   params,
     // })
@@ -112,8 +116,8 @@ function Admin() {
   useEffect(() => {
     // getAllUsers();
     getAllRooms();
-    setAllStudentlist(array);
-    console.log(allstudentlist);
+    // setAllStudentlist(array);
+    // console.log(allstudentlist);
   }, []);
 
   return (
