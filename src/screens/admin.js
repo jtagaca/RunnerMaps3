@@ -61,16 +61,6 @@ function Admin() {
     // await Axios.post(currentUrl, params).then((res) => {
     //   // if res.data[0][]
     //   // if res data is there then ;
-    //   if (res.data["error"]) {
-    //     alert(res.data["error"]);
-    //   } else {
-    //     // alert("Register Successful");
-    //     console.log(res.data);
-    //     setAllStudentlist(res.data);
-    //     console.log(allstudentlist);
-    //   }
-    // });
-
     Axios.post(currentUrl, {
       params,
     })
@@ -81,6 +71,11 @@ function Admin() {
       .catch((err) => {
         console.log(err);
       });
+    // const headers = { "Content-Type": "application/json" };
+
+    // await fetch(currentUrl, { headers, body: params })
+    //   .then((response) => response.json())
+    //   .then((data) => console.log(data));
   };
 
   useEffect(() => {
