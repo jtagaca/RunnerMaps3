@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Component, useState, useEffect } from "react";
 import CreateIcon from "@material-ui/icons/Create";
 import {
   Box,
@@ -47,9 +47,9 @@ function Admin() {
   var currentUsers = users[0];
   var array = [];
 
-  const [allstudentlist, setAllStudentlist] = useState([]);
   // Creating style object
 
+  const [rooms, setRooms] = useState([]);
   // Defining a state named rows
   // which we can update by calling on setRows function
 
@@ -80,18 +80,11 @@ function Admin() {
       } else {
         // alert("Register Successful");
         // console.log(res.data[0]);
-        setGlobalState("users", res.data);
-
-        array = [];
-        array = res.data;
+        setRooms(res.data);
         // console.log(res.data);
         // works
-        temp = res.data;
-        setAllStudentlist(temp);
+        // temp = res.data;
         // works
-        console.log(temp);
-        // returns an empty array
-        console.log(allstudentlist);
       }
     });
 
@@ -113,32 +106,51 @@ function Admin() {
     //   .then((data) => console.log(data));
   };
 
+  function showLog() {
+    console.log(rooms);
+  }
+
   useEffect(() => {
     // getAllUsers();
     getAllRooms();
-    // setAllStudentlist(array);
-    // console.log(allstudentlist);
   }, []);
 
   return (
-    <TableBody>
-      <Box margin={1}>
-        <TableRow align="center"> </TableRow>
+    <div>
+      <TableBody>
+        <Box margin={1}>
+          <TableRow align="center"> </TableRow>
 
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Room</TableCell>
-              <TableCell>Department</TableCell>
-              <TableCell>Lapentor URL</TableCell>
-              <TableCell> Map URL</TableCell>
-              <TableCell> Category</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody></TableBody>
-        </Table>
-      </Box>
-    </TableBody>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Room</TableCell>
+                <TableCell>Department</TableCell>
+                <TableCell>Lapentor URL</TableCell>
+                <TableCell> Map URL</TableCell>
+                <TableCell> Category</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rooms &&
+                rooms.map((room) => {
+                  return (
+                    <tbody key={room.Login_ID} style={{ textAlign: "left" }}>
+                      <tr>
+                        <td>{room.CRN}</td>
+                        <td>{room.Course_ID}</td>
+                        <td>{room.Course_Name}</td>
+                        <td>{room.Term}</td>
+                      </tr>
+                    </tbody>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </Box>
+      </TableBody>
+      {/* <button onClick={showLog}>Log</button> */}
+    </div>
   );
 }
 
