@@ -51,19 +51,12 @@ function Admin() {
   // Creating style object
 
   const [rooms, setRooms] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
-  const customStyles = {
-    content: {
-      top: "35%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      width: "60%",
-      transform: "translate(-40%, -10%)",
-    },
-  };
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const getAllRooms = () => {
     const params = new URLSearchParams();
@@ -100,7 +93,6 @@ function Admin() {
 
   function showLog() {
     console.log(rooms);
-    console.log(modalIsOpen);
   }
 
   // when the update button is pressed we will loop through every room in the rooms state and update the values
@@ -164,7 +156,7 @@ function Admin() {
                           <button
                             onClick={() => {
                               setModalData(room);
-                              setModalIsOpen(true);
+                              handleShow();
                             }}
                           >
                             Update
@@ -177,18 +169,21 @@ function Admin() {
             </Table>
           </Box>
         </TableBody>
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          style={customStyles}
-        >
-          {/* <h1>{modalData.title}</h1>
-        <p>{modalData.content}</p>  */}
-          <div>
-            <button onClick={() => setModalIsOpen(false)}>X</button>
-          </div>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
         </Modal>
-        <button onClick={showLog}>Log</button>
+        {/* <button onClick={showLog}>Log</button> */}
       </div>
     </>
   );
