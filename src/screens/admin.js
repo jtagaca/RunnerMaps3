@@ -126,10 +126,26 @@ function Admin() {
     setShowConfirm(false);
   };
 
-  const getAllRooms = () => {};
+  const getAllRooms = async () => {
+    const params = new URLSearchParams();
+    params.append("GetAllRooms", true);
+    params.append("session_id", localStorage.getItem("session_id"));
+    params.append("role", localStorage.getItem("role"));
+    await Axios.post(currentUrl, params).then((res) => {
+      // if res.data[0][]
+      // if res data is there then ;
+      if (res.data["error"]) {
+        alert(res.data["error"]);
+      } else {
+        // alert("Register Successful");
+        console.log(res.data);
+      }
+    });
+  };
 
   useEffect(() => {
     // getAllUsers();
+    getAllRooms();
   }, []);
 
   return (
