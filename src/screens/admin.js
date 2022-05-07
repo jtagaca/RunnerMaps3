@@ -135,21 +135,25 @@ function Admin() {
               {rooms &&
                 rooms.map((room) => {
                   return (
-                    <tbody key={room.Login_ID} style={{ textAlign: "left" }}>
-                      <tr>
-                        <td>{room.CRN}</td>
-                        <td>{room.Course_ID}</td>
-                        <td>{room.Course_Name}</td>
-                        <td>{room.Term}</td>
-                      </tr>
-                    </tbody>
+                    <tr key={room.RoomNumber + room.Department}>
+                      <td>{room.RoomNumber}</td>
+                      <td>{room.Department}</td>
+                      <td>
+                        <a target="_blank" href={room.LapentorURL}>
+                          Indoor URL
+                        </a>
+                      </td>
+
+                      <td>{room.Category}</td>
+                      <td>{room.Map_URL}</td>
+                    </tr>
                   );
                 })}
             </TableBody>
           </Table>
         </Box>
       </TableBody>
-      {/* <button onClick={showLog}>Log</button> */}
+      <button onClick={showLog}>Log</button>
     </div>
   );
 }
