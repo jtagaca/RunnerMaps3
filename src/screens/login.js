@@ -58,7 +58,7 @@ function LoginComponent(props) {
         alert(res.data["error"]);
       } else {
         alert("Register Successful");
-        $("#registerModal").modal("hide");
+        // $("#registerModal").modal("hide");
       }
     });
   };

@@ -43,6 +43,7 @@ const Rooms = [];
 function Admin() {
   const url = useGlobalState("defaultUrl");
   var currentUrl = url[0];
+  var array = [];
 
   const [allstudentlist, setAllStudentlist] = useState([]);
   // Creating style object
@@ -53,7 +54,7 @@ function Admin() {
   // Handle the case of delete confirmation where
   // user click yes delete a specific row of id:i
 
-  const getAllRooms = async () => {
+  const getAllRooms = () => {
     const params = new URLSearchParams();
     params.append("GetAllRooms", true);
     params.append("session_id", localStorage.getItem("session_id"));
@@ -63,7 +64,13 @@ function Admin() {
     //   // if res.data[0][]
     //   // if res data is there then ;
 
-    await Axios.post(currentUrl, params).then((res) => {
+    // email
+
+    // jtagaca0012@csub.edu
+    // tagaca12
+
+    let temp = [];
+    Axios.post(currentUrl, params).then((res) => {
       // if res.data[0][]
       // if res data is there then ;
       if (res.data["error"]) {
@@ -71,16 +78,20 @@ function Admin() {
       } else {
         // alert("Register Successful");
         // console.log(res.data[0]);
-        console.log(res.data);
+        array = [];
+        array = res.data;
+        // console.log(res.data);
         // works
-        let temp = res.data;
-        setAllStudentlist(...temp);
+        temp = res.data;
+        // setAllStudentlist(temp);
         // works
-        console.log(temp);
+        // console.log(temp);
         // returns an empty array
-        console.log(allstudentlist);
+        // console.log(allstudentlist);
       }
     });
+
+    console.log(temp);
     // Axios.post(currentUrl, {
     //   params,
     // })
@@ -101,6 +112,8 @@ function Admin() {
   useEffect(() => {
     // getAllUsers();
     getAllRooms();
+    setAllStudentlist(array);
+    console.log(allstudentlist);
   }, []);
 
   return (
