@@ -79,9 +79,9 @@ function LoginComponent(props) {
         localStorage.setItem("session_id", response.data["session_id"]);
         localStorage.setItem("role", response.data["role"]);
         if (localStorage.getItem("role") === "admin") {
-          // navigate("/admin");
+          navigate("/admin");
         } else {
-          // navigate("/user");
+          navigate("/user");
         }
         //     // setLoginStatus(response.data[0].username);
         //     // check the role here
