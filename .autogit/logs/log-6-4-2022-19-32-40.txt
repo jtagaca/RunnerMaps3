@@ -1,0 +1,27 @@
+-------------------- Auto-Git Log --------------------
+		Fri May 06 2022 19:32:40 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* package-lock.json
+* package.json
+* public/index.html
+* src/App.js
+
+
+Created files:
+* .autogit/autogit.json
+* .vscode/launch.json
+* src/README.md
+* src/assets/fonts/roboto-regular.ttf
+* src/assets/images/cardImage.png
+* src/components/MaterialCardBasic.js
+* src/globals/globalVar.js
+* src/screens/login.js
+* src/style.css
+
+
+Deleted files:
+
+
+Renamed files:

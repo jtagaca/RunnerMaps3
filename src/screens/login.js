@@ -41,7 +41,6 @@ function LoginComponent(props) {
 
     const params = new URLSearchParams();
     params.append("Register", true);
-    params.append("Component", true);
     params.append("email", email);
     params.append("password", password);
     // Axios({
@@ -68,18 +67,19 @@ function LoginComponent(props) {
 
   const login = async () => {
     const params = new URLSearchParams();
-    params.append("Register", true);
-    params.append("Component", true);
+    params.append("Login", true);
     params.append("email", email);
     params.append("password", password);
 
     await Axios.post(currentUrl, params).then((response) => {
-      if (response.data.message) {
-        console.log(response.data);
-        // console.log(loginStatus);
+      if (response.data["error"]) {
+        alert(response.data["error"]);
       } else {
+        localStorage.setItem("session_id", response.data["session_id"]);
+        localStorage.setItem("role", response.data["role"]);
         // setLoginStatus(response.data[0].username);
-        navigate("/");
+        // check the role here
+        // then on the admin page have a use effect check if this guy actually has the correct session
       }
     });
   };
