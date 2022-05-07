@@ -177,19 +177,16 @@ function Admin() {
             </Table>
           </Box>
         </TableBody>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          style={customStyles}
+        >
+          {/* <h1>{modalData.title}</h1>
+        <p>{modalData.content}</p>  */}
+          <div>
+            <button onClick={() => setModalIsOpen(false)}>X</button>
+          </div>
         </Modal>
         <button onClick={showLog}>Log</button>
       </div>
