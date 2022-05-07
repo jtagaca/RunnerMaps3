@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+import Modal from "react-bootstrap/Modal";
 import CreateIcon from "@material-ui/icons/Create";
 import {
   Box,
@@ -50,11 +51,19 @@ function Admin() {
   // Creating style object
 
   const [rooms, setRooms] = useState([]);
-  // Defining a state named rows
-  // which we can update by calling on setRows function
-
-  // Handle the case of delete confirmation where
-  // user click yes delete a specific row of id:i
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+  const customStyles = {
+    content: {
+      top: "35%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      width: "60%",
+      transform: "translate(-40%, -10%)",
+    },
+  };
 
   const getAllRooms = () => {
     const params = new URLSearchParams();
@@ -87,27 +96,11 @@ function Admin() {
         // works
       }
     });
-
-    // console.log(temp);
-    // Axios.post(currentUrl, {
-    //   params,
-    // })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     setAllStudentlist(response.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // const headers = { "Content-Type": "application/json" };
-
-    // await fetch(currentUrl, { headers, body: params })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data));
   };
 
   function showLog() {
     console.log(rooms);
+    console.log(modalIsOpen);
   }
 
   // when the update button is pressed we will loop through every room in the rooms state and update the values
@@ -117,60 +110,90 @@ function Admin() {
   }, []);
 
   return (
-    <div>
-      <TableBody>
-        <Box margin={1}>
-          <TableRow align="center"> </TableRow>
+    <>
+      <div>
+        <TableBody>
+          <Box margin={1}>
+            <TableRow align="center"> </TableRow>
 
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Room</TableCell>
-                <TableCell>Department</TableCell>
-                <TableCell>Lapentor URL</TableCell>
-                <TableCell> Category</TableCell>
-                <TableCell> Map URL</TableCell>
-                <TableCell> Update</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {/* Add a building name as well */}
-              {rooms &&
-                rooms.map((room) => {
-                  return (
-                    <tr key={room.RoomNumber + room.Department}>
-                      <td>{room.RoomNumber}</td>
-                      <td>{room.Department}</td>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Room</TableCell>
+                  <TableCell>Department</TableCell>
+                  <TableCell>Lapentor URL</TableCell>
+                  <TableCell> Category</TableCell>
+                  <TableCell> Map URL</TableCell>
+                  <TableCell> Update</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {/* Add a building name as well */}
+                {rooms &&
+                  rooms.map((room) => {
+                    return (
+                      <tr key={room.RoomNumber + room.Department}>
+                        <td>{room.RoomNumber}</td>
+                        <td>{room.Department}</td>
+                        {room.Lapentor_Url ? (
+                          <td>
+                            <a target="_blank" href={room.Lapentor_Url}>
+                              <button>Indoor URL</button>
+                            </a>
+                          </td>
+                        ) : (
+                          <td>No URL set</td>
+                        )}
+                        {room.Category ? (
+                          <td>{room.Category}</td>
+                        ) : (
+                          <td>Not set</td>
+                        )}
 
-                      {room.Lapentor_Url ? (
+                        {room.Map_Url ? (
+                          <td>
+                            <a target="_blank" href={room.Map_URL}>
+                              <button>Directions to the Building</button>
+                            </a>
+                          </td>
+                        ) : (
+                          <td>No Outdoor Url</td>
+                        )}
+
                         <td>
-                          <a target="_blank" href={room.Lapentor_Url}>
-                            <button>Indoor URL</button>
-                          </a>
+                          <button
+                            onClick={() => {
+                              setModalData(room);
+                              setModalIsOpen(true);
+                            }}
+                          >
+                            Update
+                          </button>
                         </td>
-                      ) : (
-                        <td>No URL set</td>
-                      )}
-                      <td>{room.Category}</td>
-                      <td>
-                        <td>
-                          <a target="_blank" href={room.Map_URL}>
-                            <button>Directions to the Building</button>
-                          </a>
-                        </td>
-                      </td>
-                      <td>
-                        <button>Update</button>
-                      </td>
-                    </tr>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </Box>
-      </TableBody>
-      <button onClick={showLog}>Log</button>
-    </div>
+                      </tr>
+                    );
+                  })}
+              </TableBody>
+            </Table>
+          </Box>
+        </TableBody>
+        <Modal show={show} onHide={handleClose}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <button onClick={showLog}>Log</button>
+      </div>
+    </>
   );
 }
 
