@@ -110,6 +110,7 @@ function Admin() {
     console.log(rooms);
   }
 
+  // when the update button is pressed we will loop through every room in the rooms state and update the values
   useEffect(() => {
     // getAllUsers();
     getAllRooms();
@@ -127,25 +128,40 @@ function Admin() {
                 <TableCell>Room</TableCell>
                 <TableCell>Department</TableCell>
                 <TableCell>Lapentor URL</TableCell>
-                <TableCell> Map URL</TableCell>
                 <TableCell> Category</TableCell>
+                <TableCell> Map URL</TableCell>
+                <TableCell> Update</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
+              {/* Add a building name as well */}
               {rooms &&
                 rooms.map((room) => {
                   return (
                     <tr key={room.RoomNumber + room.Department}>
                       <td>{room.RoomNumber}</td>
                       <td>{room.Department}</td>
-                      <td>
-                        <a target="_blank" href={room.LapentorURL}>
-                          Indoor URL
-                        </a>
-                      </td>
 
+                      {room.Lapentor_Url ? (
+                        <td>
+                          <a target="_blank" href={room.Lapentor_Url}>
+                            <button>Indoor URL</button>
+                          </a>
+                        </td>
+                      ) : (
+                        <td>No URL set</td>
+                      )}
                       <td>{room.Category}</td>
-                      <td>{room.Map_URL}</td>
+                      <td>
+                        <td>
+                          <a target="_blank" href={room.Map_URL}>
+                            <button>Directions to the Building</button>
+                          </a>
+                        </td>
+                      </td>
+                      <td>
+                        <button>Update</button>
+                      </td>
                     </tr>
                   );
                 })}
