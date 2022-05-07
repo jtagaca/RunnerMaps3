@@ -38,6 +38,7 @@ const useStyles = makeStyles({
     bottom: "104px",
   },
 });
+const Rooms = [];
 
 function Admin() {
   const url = useGlobalState("defaultUrl");
@@ -61,16 +62,35 @@ function Admin() {
     // await Axios.post(currentUrl, params).then((res) => {
     //   // if res.data[0][]
     //   // if res data is there then ;
-    Axios.post(currentUrl, {
-      params,
-    })
-      .then((response) => {
-        console.log(response.data);
-        setAllStudentlist(response.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    await Axios.post(currentUrl, params).then((res) => {
+      // if res.data[0][]
+      // if res data is there then ;
+      if (res.data["error"]) {
+        alert(res.data["error"]);
+      } else {
+        // alert("Register Successful");
+        // console.log(res.data[0]);
+        console.log(res.data);
+        // works
+        let temp = res.data;
+        setAllStudentlist(...temp);
+        // works
+        console.log(temp);
+        // returns an empty array
+        console.log(allstudentlist);
+      }
+    });
+    // Axios.post(currentUrl, {
+    //   params,
+    // })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     setAllStudentlist(response.data);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
     // const headers = { "Content-Type": "application/json" };
 
     // await fetch(currentUrl, { headers, body: params })
