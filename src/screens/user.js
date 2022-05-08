@@ -1,4 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
+import { Dropdown, Row, Col, Table } from "react-bootstrap";
+import DropdownButton from "react-bootstrap/DropdownButton";
 import { setGlobalState, useGlobalState } from "../globals/globalVar";
 import styled, { css } from "styled-components";
 import Axios from "axios";
@@ -19,14 +21,32 @@ import sci3 from "/home/cs/runnermap2/src/assets/images/sci3.jpeg";
 function User(props) {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
+  const [currentcategory, setCurrentCategory] = useState("4");
   const url = useGlobalState("defaultUrl");
   var currentUrl = url[0];
+  var PopulatedRooms = [];
+  var count = 0;
   useEffect(() => {
     // getAllUsers();
+
     getAllRooms();
     console.log(rooms);
   }, [rooms]);
+
+  useEffect(() => {
+    // getAllUsers();
+
+    getAllRooms();
+    console.log(currentcategory);
+  }, [currentcategory]);
+  var categoryMap = {
+    1: "Tutoring Center",
+    2: "Health Services",
+    3: "Club",
+    4: "All",
+  };
   const getAllRooms = () => {
+    count += 1;
     const params = new URLSearchParams();
     params.append("GetAllRooms", true);
     params.append("session_id", localStorage.getItem("session_id"));
@@ -56,6 +76,10 @@ function User(props) {
         // works
       }
     });
+    if (count === 1) {
+      PopulatedRooms = rooms;
+    }
+
     // TODO not very efficient
     // console.log(rooms);
   };
@@ -76,6 +100,17 @@ function User(props) {
       }
     });
   };
+
+  const handleFilterByCategory = (category) => {
+    // filter the rooms by category_id
+    if (category === "all") {
+      setRooms(PopulatedRooms);
+    } else {
+      var tempRoom = rooms.filter((room) => room.category_id == category);
+
+      setRooms(tempRoom);
+    }
+  };
   return (
     <>
       <Navbar bg="" expand="lg">
@@ -85,29 +120,28 @@ function User(props) {
             <Nav className="me-auto">
               <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link onClick={handleLogOut}>Logout</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <DropdownButton
-                  alignRight
-                  title={categoryMap[obj.room_type]}
-                  id="dropdown-menu-align-right"
-                  onSelect={(e) => {
-                    HandleUpdate(e, "room_type");
-                  }}
-                >
-                  <Dropdown.Item eventKey="1" value="Tutoring Center">
-                    Tutoring Center
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="2" value="Health Services">
-                    Health Services
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="3" value="Club">
-                    Club
-                  </Dropdown.Item>
-                  <Dropdown.Item eventKey="4" value="None">
-                    None
-                  </Dropdown.Item>
-                </DropdownButton>
-              </NavDropdown>
+              <DropdownButton
+                alignRight
+                title={categoryMap[currentcategory]}
+                id="dropdown-menu-align-right"
+                onSelect={(category) => {
+                  handleFilterByCategory(category);
+                  setCurrentCategory(category);
+                }}
+              >
+                <Dropdown.Item eventKey="1" value="Tutoring Center">
+                  Tutoring Center
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" value="Health Services">
+                  Health Services
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="3" value="Club">
+                  Club
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="4" value="All">
+                  All
+                </Dropdown.Item>
+              </DropdownButton>
             </Nav>
           </Navbar.Collapse>
         </Container>
