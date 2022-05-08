@@ -92,6 +92,7 @@ function User(props) {
             value: opt.RoomNumber + " " + opt.Department,
           }))
         );
+        setOptions((oldArray) => ["", ...oldArray]);
         // console.log(res.data);
         // works
         // temp = res.data;
@@ -164,7 +165,12 @@ function User(props) {
           </Navbar.Collapse>
 
           <div>
-            <Select options={currentoptions} />
+            <Select
+              options={currentoptions}
+              onChange={(e) => {
+                console.log(e);
+              }}
+            />
           </div>
         </Container>
       </Navbar>{" "}
