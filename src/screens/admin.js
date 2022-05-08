@@ -96,6 +96,8 @@ function Admin() {
         // works
       }
     });
+    // TODO not very efficient
+    // console.log(rooms);
   };
 
   useEffect(() => {
@@ -145,13 +147,15 @@ function Admin() {
         alert("Update Successful");
       }
     });
+
+    getAllRooms();
   };
 
   // when the update button is pressed we will loop through every room in the rooms state and update the values
   useEffect(() => {
     // getAllUsers();
     getAllRooms();
-  }, []);
+  }, [rooms]);
 
   return (
     <>
@@ -173,13 +177,16 @@ function Admin() {
               </TableHead>
               <TableBody>
                 {/* Add a building name as well */}
-                {rooms &&
+                {rooms |
                   rooms.map((room) => {
                     return (
                       <tr key={room.RoomNumber + room.Department}>
                         <td>{room.RoomNumber}</td>
                         <td>{room.Department}</td>
-                        {room.Lapentor_Url ? (
+                        {room.Lapentor_Url &&
+                        (room.Lapentor_Url != null ||
+                          room.Lapentor_Url != "" ||
+                          room.Lapentor_Url !== "undefined") ? (
                           <td>
                             <a target="_blank" href={room.Lapentor_Url}>
                               <button>Indoor URL</button>
@@ -188,20 +195,26 @@ function Admin() {
                         ) : (
                           <td>No URL set</td>
                         )}
-                        {room.Category ? (
-                          <td>{room.Category}</td>
+                        {room.category_id &&
+                        (room.category_id != null) |
+                          (room.category_id !== "") |
+                          (room.category_id !== "undefined") ? (
+                          <td>{room.category_id}</td>
                         ) : (
                           <td>Not set</td>
                         )}
 
-                        {room.Map_Url ? (
+                        {room.Map_URL &&
+                        (room.Map_URL !== "") |
+                          (room.Map_URL != null) |
+                          (room.Map_URL != "undefined") ? (
                           <td>
                             <a target="_blank" href={room.Map_URL}>
                               <button>Directions to the Building</button>
                             </a>
                           </td>
                         ) : (
-                          <td>No Outdoor Url</td>
+                          <td>Not set</td>
                         )}
 
                         <td>
@@ -258,7 +271,7 @@ function Admin() {
                       setLapentorUrl(e.target.value);
                       console.log(lapentorUrl);
                     }}
-                    value={modalData.Lapentor_Url}
+                    defaultValue={modalData.Lapentor_Url}
                   />
                 </Form.Group>
 
@@ -270,7 +283,7 @@ function Admin() {
                       setMapUrl(e.target.value);
                       console.log(Map_Url);
                     }}
-                    value={modalData.Map_URL}
+                    defaultValue={modalData.Map_URL}
                   />
                 </Form.Group>
               </Form>
