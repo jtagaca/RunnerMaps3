@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+import qs from "qs";
 import Modal from "react-bootstrap/Modal";
 import CreateIcon from "@material-ui/icons/Create";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -44,24 +45,70 @@ const useStyles = makeStyles({
 const Rooms = [];
 
 function MyVerticallyCenteredModal(props) {
+  const url = useGlobalState("defaultUrl");
+  const users = useGlobalState("users");
+  var currentUrl = url[0];
+  var categoryMap = {
+    1: "Tutoring Center",
+    2: "Health Services",
+    3: "Club",
+    4: "None",
+  };
   const [obj, setObj] = useState({
     room_number: "",
     department: "",
     lapentor_url: "",
     room_type: "",
     map_url: "",
+    AddNewRoom: true,
   });
   useEffect(() => {
     console.log(obj);
   }, [obj]);
 
-  const handleAddNewRoom = () => {};
-
   const HandleUpdate = async (e, objName) => {
-    await setObj((prevState) => ({
-      ...prevState,
-      obj: e,
-    }));
+    console.log(objName);
+    if (objName == "room_number") {
+      await setObj((prevState) => ({
+        ...prevState,
+        room_number: e,
+      }));
+    } else if (objName == "department") {
+      await setObj((prevState) => ({
+        ...prevState,
+        department: e,
+      }));
+    } else if (objName == "room_type") {
+      await setObj((prevState) => ({
+        ...prevState,
+        room_type: e,
+      }));
+    } else if (objName == "lapentor_url") {
+      await setObj((prevState) => ({
+        ...prevState,
+        lapentor_url: e,
+      }));
+    } else if (objName == "map_url") {
+      await setObj((prevState) => ({
+        ...prevState,
+        map_url: e,
+      }));
+    }
+  };
+
+  const handleAddRoom = async () => {
+    console.log(qs.stringify(obj));
+    await Axios.post(currentUrl, qs.stringify(obj)).then((res) => {
+      if (res.data["error"]) {
+        console.log("====================================");
+        console.log(res.data);
+        console.log("====================================");
+        alert(res.data["error"]);
+      } else {
+        console.log(res.data);
+        alert("Room Added");
+      }
+    });
   };
   return (
     <Modal
@@ -88,17 +135,48 @@ function MyVerticallyCenteredModal(props) {
                   HandleUpdate(e.target.value, "room_number");
                 }}
               />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
+              <Form.Label>Department</Form.Label>
+              <Form.Control
+                placeholder="Art.."
+                onChange={(e) => {
+                  HandleUpdate(e.target.value, "department");
+                }}
+              />
+              <Form.Label>Category</Form.Label>
+              <DropdownButton
+                alignRight
+                title={categoryMap[obj.room_type]}
+                id="dropdown-menu-align-right"
+                onSelect={(e) => {
+                  HandleUpdate(e, "room_type");
+                }}
+              >
+                <Dropdown.Item eventKey="1" value="Tutoring Center">
+                  Tutoring Center
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" value="Health Services">
+                  Health Services
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="3" value="Club">
+                  Club
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="4" value="None">
+                  None
+                </Dropdown.Item>
+              </DropdownButton>
+              <Form.Label>Lapentor URL</Form.Label>
+              <Form.Control
+                placeholder="https://"
+                onChange={(e) => {
+                  HandleUpdate(e.target.value, "lapentor_url");
+                }}
+              />
               <Form.Label>Map URL</Form.Label>
               <Form.Control
-                placeholder="http://"
+                placeholder="https://"
                 onChange={(e) => {
-                  // setMapUrl(e.target.value);
-                  // console.log(Map_Url);
+                  HandleUpdate(e.target.value, "map_url");
                 }}
-                // defaultValue={modalData.Map_URL}
               />
             </Form.Group>
           </Form>
@@ -106,6 +184,9 @@ function MyVerticallyCenteredModal(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>Close</Button>
+        <Button variant="primary" onClick={handleAddRoom}>
+          Submit
+        </Button>
       </Modal.Footer>
     </Modal>
   );
