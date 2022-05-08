@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import Axios from "axios";
 import Card from "react-bootstrap/Card";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
-
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import {
 
 import sci3 from "/home/cs/runnermap2/src/assets/images/sci3.jpeg";
 function User(props) {
+  const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
   const url = useGlobalState("defaultUrl");
   var currentUrl = url[0];
@@ -58,27 +59,54 @@ function User(props) {
     // TODO not very efficient
     // console.log(rooms);
   };
+
+  const handleLogOut = () => {
+    const params = new URLSearchParams();
+    params.append("GetAllRooms", true);
+    params.append("session_id", localStorage.getItem("session_id"));
+    localStorage.clear();
+    Axios.post(currentUrl, params).then((res) => {
+      // if res.data[0][]
+      // if res data is there then ;
+      if (res.data["error"]) {
+        alert(res.data["error"]);
+      } else {
+        alert("Logout Successful");
+        navigate("/");
+      }
+    });
+  };
   return (
     <>
-      <Navbar bg="light" expand="lg">
+      <Navbar bg="" expand="lg">
         <Container>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Logout</Nav.Link>
+              <Nav.Link onClick={handleLogOut}>Logout</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
+                <DropdownButton
+                  alignRight
+                  title={categoryMap[obj.room_type]}
+                  id="dropdown-menu-align-right"
+                  onSelect={(e) => {
+                    HandleUpdate(e, "room_type");
+                  }}
+                >
+                  <Dropdown.Item eventKey="1" value="Tutoring Center">
+                    Tutoring Center
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="2" value="Health Services">
+                    Health Services
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="3" value="Club">
+                    Club
+                  </Dropdown.Item>
+                  <Dropdown.Item eventKey="4" value="None">
+                    None
+                  </Dropdown.Item>
+                </DropdownButton>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
