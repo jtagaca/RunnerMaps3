@@ -43,6 +43,56 @@ const useStyles = makeStyles({
 });
 const Rooms = [];
 
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+      {...props}
+      size=""
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Add a new room!!
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Modal.Body>
+          {/* TODO add more options */}
+
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Room Number</Form.Label>
+              <Form.Control
+                placeholder="201.."
+                onChange={(e) => {
+                  setLapentorUrl(e.target.value);
+                  console.log(lapentorUrl);
+                }}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Map URL</Form.Label>
+              <Form.Control
+                placeholder="http://"
+                onChange={(e) => {
+                  setMapUrl(e.target.value);
+                  console.log(Map_Url);
+                }}
+                defaultValue={modalData.Map_URL}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
 function Admin() {
   const url = useGlobalState("defaultUrl");
   const users = useGlobalState("users");
@@ -61,6 +111,7 @@ function Admin() {
   const [Map_Url, setMapUrl] = useState(null);
 
   const [show, setShow] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -160,6 +211,10 @@ function Admin() {
   return (
     <>
       <div>
+        <MyVerticallyCenteredModal
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+        />
         <TableBody>
           <Box margin={1}>
             <TableRow align="center"> </TableRow>
@@ -173,20 +228,27 @@ function Admin() {
                   <TableCell> Category</TableCell>
                   <TableCell> Map URL</TableCell>
                   <TableCell> Update</TableCell>
+                  <Button
+                    onClick={() => {
+                      setModalShow(!modalShow);
+                    }}
+                  >
+                    <TableCell> Add New Room</TableCell>
+                  </Button>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {/* Add a building name as well */}
-                {rooms |
+                {rooms &&
                   rooms.map((room) => {
                     return (
                       <tr key={room.RoomNumber + room.Department}>
                         <td>{room.RoomNumber}</td>
                         <td>{room.Department}</td>
                         {room.Lapentor_Url &&
-                        (room.Lapentor_Url != null ||
-                          room.Lapentor_Url != "" ||
-                          room.Lapentor_Url !== "undefined") ? (
+                        room.Lapentor_Url != null &&
+                        room.Lapentor_Url != "" &&
+                        room.Lapentor_Url != "undefined" ? (
                           <td>
                             <a target="_blank" href={room.Lapentor_Url}>
                               <button>Indoor URL</button>
@@ -197,17 +259,15 @@ function Admin() {
                         )}
                         {room.category_id &&
                         (room.category_id != null) |
-                          (room.category_id !== "") |
-                          (room.category_id !== "undefined") ? (
+                          (room.category_id != "") ? (
                           <td>{room.category_id}</td>
                         ) : (
                           <td>Not set</td>
                         )}
 
-                        {room.Map_URL &&
-                        (room.Map_URL !== "") |
-                          (room.Map_URL != null) |
-                          (room.Map_URL != "undefined") ? (
+                        {room.Map_URL != "" &&
+                        room.Map_URL != null &&
+                        room.Map_URL != "undefined" ? (
                           <td>
                             <a target="_blank" href={room.Map_URL}>
                               <button>Directions to the Building</button>
@@ -237,7 +297,7 @@ function Admin() {
             </Table>
           </Box>
         </TableBody>
-
+        {/* Todo modal imperfections like undefined */}
         {modalData ? (
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -246,6 +306,7 @@ function Admin() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
+              {/* TODO add more options */}
               <DropdownButton
                 alignRight
                 title={categoryMap[modalData.category_id]}
