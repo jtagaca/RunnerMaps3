@@ -2,7 +2,20 @@ import React, { Component, useEffect, useState } from "react";
 import { setGlobalState, useGlobalState } from "../globals/globalVar";
 import styled, { css } from "styled-components";
 import Axios from "axios";
+import Card from "react-bootstrap/Card";
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from "react-bootstrap";
 
+import {
+  Box,
+  Button,
+  Snackbar,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@material-ui/core";
+
+import sci3 from "/home/cs/runnermap2/src/assets/images/sci3.jpeg";
 function User(props) {
   const [rooms, setRooms] = useState([]);
   const url = useGlobalState("defaultUrl");
@@ -46,52 +59,83 @@ function User(props) {
     // console.log(rooms);
   };
   return (
-    <Container>
-      <Rect4>
-        {/* Add a building name as well */}
-        {rooms &&
-          rooms.map((room) => {
-            return (
-              <Rect5>
-                <tr key={room.RoomNumber + room.Department}>
-                  <td>{room.RoomNumber}</td>
-                  <td>{room.Department}</td>
-                  {room.Lapentor_Url &&
-                  room.Lapentor_Url != null &&
-                  room.Lapentor_Url != "" &&
-                  room.Lapentor_Url != "undefined" ? (
-                    <td>
-                      <a target="_blank" href={room.Lapentor_Url}>
-                        <button>Indoor URL</button>
-                      </a>
-                    </td>
-                  ) : (
-                    <td>No URL set</td>
-                  )}
-                  {room.category_id &&
-                  (room.category_id != null) | (room.category_id != "") ? (
-                    <td>{room.category_id}</td>
-                  ) : (
-                    <td>Not set</td>
-                  )}
+    <>
+      <Navbar bg="light" expand="lg">
+        <Container>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="me-auto">
+              <Nav.Link href="#home">Home</Nav.Link>
+              <Nav.Link href="#link">Link</Nav.Link>
+              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.2">
+                  Another action
+                </NavDropdown.Item>
+                <NavDropdown.Item href="#action/3.3">
+                  Something
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action/3.4">
+                  Separated link
+                </NavDropdown.Item>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>{" "}
+      <Container>
+        <Rect4>
+          {/* Add a building name as well */}
+          {rooms &&
+            rooms.map((room) => {
+              return (
+                <Rect5>
+                  <Card
+                    className="text-center"
+                    key={room.RoomNumber + room.Department}
+                  >
+                    <Card.Header>{room.category_id}</Card.Header>
+                    <Card.Body>
+                      <Card.Title>
+                        {room.RoomNumber + " " + room.Department}
+                      </Card.Title>
 
-                  {room.Map_URL != "" &&
-                  room.Map_URL != null &&
-                  room.Map_URL != "undefined" ? (
-                    <td>
-                      <a target="_blank" href={room.Map_URL}>
-                        <button>Directions to the Building</button>
-                      </a>
-                    </td>
-                  ) : (
-                    <td>Not set</td>
-                  )}
-                </tr>
-              </Rect5>
-            );
-          })}
-      </Rect4>
-    </Container>
+                      <Card.Img variant="top" src={sci3} />
+                      {room.Lapentor_Url &&
+                      room.Lapentor_Url != null &&
+                      room.Lapentor_Url != "" &&
+                      room.Lapentor_Url != "undefined" ? (
+                        <Button variant="primary">
+                          <a target="_blank" href={room.Lapentor_Url}>
+                            Indoor Navigation
+                          </a>
+                        </Button>
+                      ) : (
+                        <p>No URL set</p>
+                      )}
+
+                      {room.Map_URL &&
+                      room.Map_URL != null &&
+                      room.Map_URL != "" &&
+                      room.Map_URL != "undefined" ? (
+                        <Button variant="primary">
+                          <a target="_blank" href={room.Map_URL}>
+                            Outdoor Navigation
+                          </a>
+                        </Button>
+                      ) : (
+                        <p>No URL set</p>
+                      )}
+                    </Card.Body>
+                    <Card.Footer className="text-muted">2 days ago</Card.Footer>
+                  </Card>
+                </Rect5>
+              );
+            })}
+        </Rect4>
+      </Container>
+    </>
   );
 }
 
@@ -113,13 +157,8 @@ const Rect4 = styled.div`
 
 const Rect5 = styled.div`
   width: 529px;
-  height: 252px;
-  background-color: #e6e6e6;
-  border-radius: 27px;
-  margin-top: 57px;
   margin-left: 131px;
-  margin-bottom: 10px;
-  padding: 10%;
+  margin-bottom: 20px;
 `;
 
 export default User;
