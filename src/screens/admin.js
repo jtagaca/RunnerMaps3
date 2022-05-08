@@ -57,6 +57,8 @@ function Admin() {
   const [rooms, setRooms] = useState([]);
   const [modalData, setModalData] = useState(null);
   const [category, setCategory] = useState(null);
+  const [lapentorUrl, setLapentorUrl] = useState(null);
+  const [Map_Url, setMapUrl] = useState(null);
 
   const [show, setShow] = useState(false);
 
@@ -118,6 +120,29 @@ function Admin() {
   function showLog() {
     console.log(rooms);
   }
+
+  const handleUpdateSubmit = async () => {
+    const params = new URLSearchParams();
+    params.append("EditRoom", true);
+    params.append("room_number", modalData.RoomNumber);
+    params.append("department", modalData.Department);
+    params.append("room_type", modalData.category_id);
+    params.append("lapentor_url", modalData.Lapentor_Url);
+    params.append("map_url", modalData.Map_URL);
+
+    // make a post request with the paramaters above
+    await Axios.post(currentUrl, params).then((res) => {
+      if (res.data["error"]) {
+        console.log("====================================");
+        console.log(res.data);
+        console.log("====================================");
+        alert(res.data["error"]);
+      } else {
+        console.log(res.data);
+        alert("Update Successful");
+      }
+    });
+  };
 
   // when the update button is pressed we will loop through every room in the rooms state and update the values
   useEffect(() => {
@@ -181,6 +206,9 @@ function Admin() {
                             onClick={() => {
                               setModalData(room);
                               handleShow();
+                              setCategory(room.Category);
+                              setLapentorUrl(room.Lapentor_Url);
+                              setMapUrl(room.Map_Url);
                             }}
                           >
                             Update
@@ -218,14 +246,29 @@ function Admin() {
                   Club
                 </Dropdown.Item>
               </DropdownButton>
-              <form>
-                <Form.FormGroup controlId="formBasicText">
-                  <Form.ControlLabel>
-                    Working example with validation
-                  </Form.ControlLabel>
-                  <Form.FormControl type="text" placeholder="Enter text" />
-                </Form.FormGroup>
-              </form>
+              <Form>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Lapentor URL</Form.Label>
+                  <Form.Control
+                    placeholder="http://"
+                    onChange={(e) => {
+                      setLapentorUrl(e.target.value);
+                      console.log(lapentorUrl);
+                    }}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Map URL</Form.Label>
+                  <Form.Control
+                    placeholder="http://"
+                    onChange={(e) => {
+                      setMapUrl(e.target.value);
+                      console.log(Map_Url);
+                    }}
+                  />
+                </Form.Group>
+              </Form>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
