@@ -127,8 +127,11 @@ function Admin() {
     params.append("room_number", modalData.RoomNumber);
     params.append("department", modalData.Department);
     params.append("room_type", modalData.category_id);
-    params.append("lapentor_url", modalData.Lapentor_Url);
-    params.append("map_url", modalData.Map_URL);
+    params.append("lapentor_url", lapentorUrl);
+    params.append("map_url", Map_Url);
+    // console.log(modalData.Map_URL);
+    // console.log(params);
+    console.log("this is the modal data before sending" + modalData);
 
     // make a post request with the paramaters above
     await Axios.post(currentUrl, params).then((res) => {
@@ -255,6 +258,7 @@ function Admin() {
                       setLapentorUrl(e.target.value);
                       console.log(lapentorUrl);
                     }}
+                    value={modalData.Lapentor_Url}
                   />
                 </Form.Group>
 
@@ -266,6 +270,7 @@ function Admin() {
                       setMapUrl(e.target.value);
                       console.log(Map_Url);
                     }}
+                    value={modalData.Map_URL}
                   />
                 </Form.Group>
               </Form>
@@ -274,7 +279,7 @@ function Admin() {
               <Button variant="secondary" onClick={handleClose}>
                 Close
               </Button>
-              <Button variant="primary" onClick={handleClose}>
+              <Button variant="primary" onClick={handleUpdateSubmit}>
                 Submit
               </Button>
             </Modal.Footer>
