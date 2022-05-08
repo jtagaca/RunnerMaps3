@@ -44,6 +44,25 @@ const useStyles = makeStyles({
 const Rooms = [];
 
 function MyVerticallyCenteredModal(props) {
+  const [obj, setObj] = useState({
+    room_number: "",
+    department: "",
+    lapentor_url: "",
+    room_type: "",
+    map_url: "",
+  });
+  useEffect(() => {
+    console.log(obj);
+  }, [obj]);
+
+  const handleAddNewRoom = () => {};
+
+  const HandleUpdate = async (e, objName) => {
+    await setObj((prevState) => ({
+      ...prevState,
+      obj: e,
+    }));
+  };
   return (
     <Modal
       {...props}
@@ -66,8 +85,7 @@ function MyVerticallyCenteredModal(props) {
               <Form.Control
                 placeholder="201.."
                 onChange={(e) => {
-                  setLapentorUrl(e.target.value);
-                  console.log(lapentorUrl);
+                  HandleUpdate(e.target.value, "room_number");
                 }}
               />
             </Form.Group>
@@ -77,10 +95,10 @@ function MyVerticallyCenteredModal(props) {
               <Form.Control
                 placeholder="http://"
                 onChange={(e) => {
-                  setMapUrl(e.target.value);
-                  console.log(Map_Url);
+                  // setMapUrl(e.target.value);
+                  // console.log(Map_Url);
                 }}
-                defaultValue={modalData.Map_URL}
+                // defaultValue={modalData.Map_URL}
               />
             </Form.Group>
           </Form>
