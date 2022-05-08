@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import CreateIcon from "@material-ui/icons/Create";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { Dropdown, Row, Col, Table } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 import {
   Box,
   Button,
@@ -46,6 +47,8 @@ function Admin() {
   const url = useGlobalState("defaultUrl");
   const users = useGlobalState("users");
   var currentUrl = url[0];
+  // make a map look up for the category with the key being the catgegory_id
+  var categoryMap = { 1: "Tutoring Center", 2: "Health Services", 3: "Club" };
   var currentUsers = users[0];
   var array = [];
 
@@ -93,16 +96,22 @@ function Admin() {
     });
   };
 
+  useEffect(() => {
+    console.log(modalData);
+  }, [modalData]);
+  useEffect(() => {
+    console.log(category);
+  }, [category]);
+
   const handleSelect = async (e) => {
-    // console.log(e);
+    console.log(e);
     // setModalData(e);
     // var temp = e;
-    await setCategory(e);
-    console.log(category);
-    // await setModalData((prevState) => ({
-    //   ...prevState,
-    //   category_id: e,
-    // }));
+    // console.log(category);
+    await setModalData((prevState) => ({
+      ...prevState,
+      category_id: e,
+    }));
 
     // console.log(modalData);
   };
@@ -195,18 +204,28 @@ function Admin() {
             <Modal.Body>
               <DropdownButton
                 alignRight
-                title="{modalData.Category}"
+                title={categoryMap[modalData.category_id]}
                 id="dropdown-menu-align-right"
                 onSelect={handleSelect}
               >
-                <Dropdown.Item eventKey="Tutoring Center">
+                <Dropdown.Item eventKey="1" value="Tutoring Center">
                   Tutoring Center
                 </Dropdown.Item>
-                <Dropdown.Item eventKey="Health Services">
+                <Dropdown.Item eventKey="2" value="Health Services">
                   Health Services
                 </Dropdown.Item>
-                <Dropdown.Item eventKey="Club Room">Club</Dropdown.Item>
+                <Dropdown.Item eventKey="3" value="Club">
+                  Club
+                </Dropdown.Item>
               </DropdownButton>
+              <form>
+                <Form.FormGroup controlId="formBasicText">
+                  <Form.ControlLabel>
+                    Working example with validation
+                  </Form.ControlLabel>
+                  <Form.FormControl type="text" placeholder="Enter text" />
+                </Form.FormGroup>
+              </form>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleClose}>
