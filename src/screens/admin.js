@@ -1,11 +1,12 @@
 import React, { Component, useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import CreateIcon from "@material-ui/icons/Create";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import { Dropdown, Row, Col, Table } from "react-bootstrap";
 import {
   Box,
   Button,
   Snackbar,
-  Table,
   TableBody,
   TableCell,
   TableHead,
@@ -52,6 +53,7 @@ function Admin() {
 
   const [rooms, setRooms] = useState([]);
   const [modalData, setModalData] = useState(null);
+  const [category, setCategory] = useState(null);
 
   const [show, setShow] = useState(false);
 
@@ -91,6 +93,19 @@ function Admin() {
     });
   };
 
+  const handleSelect = async (e) => {
+    // console.log(e);
+    // setModalData(e);
+    // var temp = e;
+    await setCategory(e);
+    console.log(category);
+    // await setModalData((prevState) => ({
+    //   ...prevState,
+    //   category_id: e,
+    // }));
+
+    // console.log(modalData);
+  };
   function showLog() {
     console.log(rooms);
   }
@@ -169,20 +184,41 @@ function Admin() {
             </Table>
           </Box>
         </TableBody>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
+
+        {modalData ? (
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>
+                {modalData.RoomNumber + " " + modalData.Department}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <DropdownButton
+                alignRight
+                title="{modalData.Category}"
+                id="dropdown-menu-align-right"
+                onSelect={handleSelect}
+              >
+                <Dropdown.Item eventKey="Tutoring Center">
+                  Tutoring Center
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="Health Services">
+                  Health Services
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="Club Room">Club</Dropdown.Item>
+              </DropdownButton>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={handleClose}>
+                Submit
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ) : null}
+
         {/* <button onClick={showLog}>Log</button> */}
       </div>
     </>
