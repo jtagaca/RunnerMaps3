@@ -47,6 +47,15 @@ const Rooms = [];
 function MyVerticallyCenteredModal(props) {
   const url = useGlobalState("defaultUrl");
   const users = useGlobalState("users");
+
+  var initialState = {
+    room_number: "",
+    department: "",
+    lapentor_url: "",
+    room_type: "",
+    map_url: "",
+    AddNewRoom: true,
+  };
   var currentUrl = url[0];
   var categoryMap = {
     1: "Tutoring Center",
@@ -107,6 +116,7 @@ function MyVerticallyCenteredModal(props) {
       } else {
         console.log(res.data);
         alert("Room Added");
+        setObj(initialState);
       }
     });
   };

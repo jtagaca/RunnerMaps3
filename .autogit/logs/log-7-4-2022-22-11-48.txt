@@ -1,0 +1,18 @@
+-------------------- Auto-Git Log --------------------
+		Sat May 07 2022 22:11:48 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* package-lock.json
+* package.json
+* src/screens/admin.js
+
+
+Created files:
+* .autogit/logs/log-7-4-2022-21-41-4.txt
+
+
+Deleted files:
+
+
+Renamed files:
