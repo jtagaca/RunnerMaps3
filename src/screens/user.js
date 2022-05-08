@@ -21,6 +21,8 @@ import sci3 from "/home/cs/runnermap2/src/assets/images/sci3.jpeg";
 function User(props) {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState([]);
+
+  const [tempArr, setTempArry] = useState([]);
   const [currentcategory, setCurrentCategory] = useState("4");
   const url = useGlobalState("defaultUrl");
   var currentUrl = url[0];
@@ -28,15 +30,18 @@ function User(props) {
   var count = 0;
   useEffect(() => {
     // getAllUsers();
-
-    getAllRooms();
     console.log(rooms);
   }, [rooms]);
 
   useEffect(() => {
     // getAllUsers();
-
     getAllRooms();
+    // console.log(rooms);
+  }, []);
+
+  useEffect(() => {
+    // getAllUsers();
+
     console.log(currentcategory);
   }, [currentcategory]);
   var categoryMap = {
@@ -45,7 +50,7 @@ function User(props) {
     3: "Club",
     4: "All",
   };
-  const getAllRooms = () => {
+  const getAllRooms = async () => {
     count += 1;
     const params = new URLSearchParams();
     params.append("GetAllRooms", true);
@@ -61,7 +66,7 @@ function User(props) {
     // jtagaca0012@csub.edu
     // tagaca12
 
-    Axios.post(currentUrl, params).then((res) => {
+    await Axios.post(currentUrl, params).then((res) => {
       // if res.data[0][]
       // if res data is there then ;
       if (res.data["error"]) {
@@ -70,15 +75,13 @@ function User(props) {
         // alert("Register Successful");
         // console.log(res.data[0]);
         setRooms(res.data);
+        setTempArry(res.data);
         // console.log(res.data);
         // works
         // temp = res.data;
         // works
       }
     });
-    if (count === 1) {
-      PopulatedRooms = rooms;
-    }
 
     // TODO not very efficient
     // console.log(rooms);
@@ -101,14 +104,14 @@ function User(props) {
     });
   };
 
-  const handleFilterByCategory = (category) => {
+  const handleFilterByCategory = async (category) => {
     // filter the rooms by category_id
     if (category === "all") {
-      setRooms(PopulatedRooms);
+      setRooms(...tempArr);
     } else {
-      var tempRoom = rooms.filter((room) => room.category_id == category);
+      var tempRoom = tempArr.filter((room) => room.category_id == category);
 
-      setRooms(tempRoom);
+      await setRooms(tempRoom);
     }
   };
   return (
