@@ -120,11 +120,21 @@ function User(props) {
       }
     });
   };
+  const handleFilterBySearch = (e) => {
+    // split the string e two an array
+
+    var Inputs = e.value.split(" ");
+    console.log(Inputs);
+    var temp = tempArr.filter(
+      (room) => room.RoomNumber == Inputs[0] && room.Department == Inputs[1]
+    );
+    setRooms(temp);
+  };
 
   const handleFilterByCategory = async (category) => {
     // filter the rooms by category_id
     if (category === "4") {
-      setRooms(...tempArr);
+      await setRooms(tempArr);
     } else {
       var tempRoom = tempArr.filter((room) => room.category_id == category);
 
@@ -168,7 +178,7 @@ function User(props) {
             <Select
               options={currentoptions}
               onChange={(e) => {
-                console.log(e);
+                handleFilterBySearch(e);
               }}
             />
           </div>
