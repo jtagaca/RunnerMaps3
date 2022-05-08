@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import qs from "qs";
 import Modal from "react-bootstrap/Modal";
 import CreateIcon from "@material-ui/icons/Create";
@@ -70,13 +71,12 @@ function MyVerticallyCenteredModal(props) {
     room_type: "",
     map_url: "",
     AddNewRoom: true,
+    session_id: localStorage.getItem("session_id"),
+    role: localStorage.getItem("role"),
   });
-  useEffect(() => {
-    console.log(obj);
-  }, [obj]);
+  useEffect(() => {}, [obj]);
 
   const HandleUpdate = async (e, objName) => {
-    console.log(objName);
     if (objName == "room_number") {
       await setObj((prevState) => ({
         ...prevState,
@@ -106,12 +106,15 @@ function MyVerticallyCenteredModal(props) {
   };
 
   const handleAddRoom = async () => {
-    console.log(qs.stringify(obj));
-    await Axios.post(currentUrl, qs.stringify(obj)).then((res) => {
+    console.log(obj);
+
+    await Axios({
+      method: "post",
+      url: currentUrl,
+      data: qs.stringify(obj),
+      credentials: "same-origin",
+    }).then((res) => {
       if (res.data["error"]) {
-        console.log("====================================");
-        console.log(res.data);
-        console.log("====================================");
         alert(res.data["error"]);
       } else {
         console.log(res.data);
@@ -204,6 +207,7 @@ function MyVerticallyCenteredModal(props) {
 
 function Admin() {
   const url = useGlobalState("defaultUrl");
+  const navigate = useNavigate();
   const users = useGlobalState("users");
   var currentUrl = url[0];
   // make a map look up for the category with the key being the catgegory_id
@@ -248,40 +252,33 @@ function Admin() {
         alert(res.data["error"]);
       } else {
         // alert("Register Successful");
-        // console.log(res.data[0]);
+        //
         setRooms(res.data);
-        // console.log(res.data);
+        //
         // works
         // temp = res.data;
         // works
       }
     });
     // TODO not very efficient
-    // console.log(rooms);
+    //
   };
 
-  useEffect(() => {
-    console.log(modalData);
-  }, [modalData]);
-  useEffect(() => {
-    console.log(category);
-  }, [category]);
+  useEffect(() => {}, [modalData]);
+  useEffect(() => {}, [category]);
 
   const handleSelect = async (e) => {
-    console.log(e);
     // setModalData(e);
     // var temp = e;
-    // console.log(category);
+    //
     await setModalData((prevState) => ({
       ...prevState,
       category_id: e,
     }));
 
-    // console.log(modalData);
+    //
   };
-  function showLog() {
-    console.log(rooms);
-  }
+  function showLog() {}
 
   const handleUpdateSubmit = async () => {
     const params = new URLSearchParams();
@@ -291,19 +288,14 @@ function Admin() {
     params.append("room_type", modalData.category_id);
     params.append("lapentor_url", lapentorUrl);
     params.append("map_url", Map_Url);
-    // console.log(modalData.Map_URL);
-    // console.log(params);
-    console.log("this is the modal data before sending" + modalData);
+    //
+    //
 
     // make a post request with the paramaters above
     await Axios.post(currentUrl, params).then((res) => {
       if (res.data["error"]) {
-        console.log("====================================");
-        console.log(res.data);
-        console.log("====================================");
         alert(res.data["error"]);
       } else {
-        console.log(res.data);
         alert("Update Successful");
       }
     });
@@ -317,8 +309,26 @@ function Admin() {
     getAllRooms();
   }, [rooms]);
 
+  const handleLogOut = () => {
+    const params = new URLSearchParams();
+    params.append("GetAllRooms", true);
+    params.append("session_id", localStorage.getItem("session_id"));
+    localStorage.clear();
+    Axios.post(currentUrl, params).then((res) => {
+      // if res.data[0][]
+      // if res data is there then ;
+      if (res.data["error"]) {
+        alert(res.data["error"]);
+      } else {
+        alert("Logout Successful");
+        navigate("/");
+      }
+    });
+  };
+
   return (
     <>
+      <Button onClick={handleLogOut}>Logout</Button>
       <div>
         <MyVerticallyCenteredModal
           show={modalShow}
@@ -439,7 +449,6 @@ function Admin() {
                     placeholder="http://"
                     onChange={(e) => {
                       setLapentorUrl(e.target.value);
-                      console.log(lapentorUrl);
                     }}
                     defaultValue={modalData.Lapentor_Url}
                   />
@@ -451,7 +460,6 @@ function Admin() {
                     placeholder="http://"
                     onChange={(e) => {
                       setMapUrl(e.target.value);
-                      console.log(Map_Url);
                     }}
                     defaultValue={modalData.Map_URL}
                   />

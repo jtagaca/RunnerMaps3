@@ -75,7 +75,7 @@ function LoginComponent(props) {
       if (response.data["error"]) {
         alert(response.data["error"]);
       } else {
-        // console.log(response.data);
+        //
         localStorage.setItem("session_id", response.data["session_id"]);
         localStorage.setItem("role", response.data["role"]);
         if (response.data["role"] == "admin") {

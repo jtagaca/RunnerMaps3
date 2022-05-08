@@ -32,19 +32,16 @@ function User(props) {
   var count = 0;
   useEffect(() => {
     // getAllUsers();
-    console.log(rooms);
   }, [rooms]);
 
   useEffect(() => {
     // getAllUsers();
     getAllRooms();
-    // console.log(rooms);
+    //
   }, []);
 
   useEffect(() => {
     // getAllUsers();
-
-    console.log(currentcategory);
   }, [currentcategory]);
   var categoryMap = {
     1: "Tutoring Center",
@@ -81,7 +78,7 @@ function User(props) {
         alert(res.data["error"]);
       } else {
         // alert("Register Successful");
-        // console.log(res.data[0]);
+        //
         setRooms(res.data);
         setTempArry(res.data);
         setOptions("");
@@ -93,7 +90,7 @@ function User(props) {
           }))
         );
         setOptions((oldArray) => ["", ...oldArray]);
-        // console.log(res.data);
+        //
         // works
         // temp = res.data;
         // works
@@ -101,7 +98,7 @@ function User(props) {
     });
 
     // TODO not very efficient
-    // console.log(rooms);
+    //
   };
 
   const handleLogOut = () => {
@@ -124,7 +121,7 @@ function User(props) {
     // split the string e two an array
 
     var Inputs = e.value.split(" ");
-    console.log(Inputs);
+
     var temp = tempArr.filter(
       (room) => room.RoomNumber == Inputs[0] && room.Department == Inputs[1]
     );
