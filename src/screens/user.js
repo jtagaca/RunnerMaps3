@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
+import Select from "react-select";
 import { Dropdown, Row, Col, Table } from "react-bootstrap";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { setGlobalState, useGlobalState } from "../globals/globalVar";
@@ -23,10 +24,11 @@ function User(props) {
   const [rooms, setRooms] = useState([]);
 
   const [tempArr, setTempArry] = useState([]);
+  const [currentoptions, setOptions] = useState([]);
   const [currentcategory, setCurrentCategory] = useState("4");
   const url = useGlobalState("defaultUrl");
   var currentUrl = url[0];
-  var PopulatedRooms = [];
+  var PopulatedRoomsOptions = [];
   var count = 0;
   useEffect(() => {
     // getAllUsers();
@@ -50,6 +52,12 @@ function User(props) {
     3: "Club",
     4: "All",
   };
+
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
   const getAllRooms = async () => {
     count += 1;
     const params = new URLSearchParams();
@@ -76,6 +84,14 @@ function User(props) {
         // console.log(res.data[0]);
         setRooms(res.data);
         setTempArry(res.data);
+        setOptions("");
+
+        setOptions(
+          res.data.map((opt) => ({
+            label: opt.RoomNumber + " " + opt.Department,
+            value: opt.RoomNumber + " " + opt.Department,
+          }))
+        );
         // console.log(res.data);
         // works
         // temp = res.data;
@@ -106,7 +122,7 @@ function User(props) {
 
   const handleFilterByCategory = async (category) => {
     // filter the rooms by category_id
-    if (category === "all") {
+    if (category === "4") {
       setRooms(...tempArr);
     } else {
       var tempRoom = tempArr.filter((room) => room.category_id == category);
@@ -121,7 +137,6 @@ function User(props) {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link onClick={handleLogOut}>Logout</Nav.Link>
               <DropdownButton
                 alignRight
@@ -147,6 +162,10 @@ function User(props) {
               </DropdownButton>
             </Nav>
           </Navbar.Collapse>
+
+          <div>
+            <Select options={currentoptions} />
+          </div>
         </Container>
       </Navbar>{" "}
       <Container>
