@@ -15,7 +15,43 @@ function LoginComponent(props) {
   // make an axios query
 
   const url = useGlobalState("defaultUrl");
+
   var currentUrl = url[0];
+
+  const handleTest = async () => {
+    const params = new URLSearchParams();
+    params.append("Test", true);
+    await Axios.post(currentUrl, params, { withCredentials: true }).then(
+      (res) => {
+        // if res.data[0][]
+        // if res data is there then ;
+        console.log(res.data);
+        if (res.data["error"]) {
+          alert(res.data["error"]);
+        } else {
+          // $("#registerModal").modal("hide");
+        }
+      }
+    );
+  };
+
+  const handleGetTest = async () => {
+    const params = new URLSearchParams();
+    params.append("Test", true);
+    await Axios.post(currentUrl, params, { withCredentials: true }).then(
+      (res) => {
+        // if res.data[0][]
+        // if res data is there then ;
+        console.log(res.data);
+        if (res.data["error"]) {
+          alert(res.data["error"]);
+        } else {
+          // $("#registerModal").modal("hide");
+        }
+      }
+    );
+  };
+
   const handleEmailAndpasswordVerify = () => {
     if (email.length === 0) {
       alert("Email cannot be empty.");
@@ -51,16 +87,18 @@ function LoginComponent(props) {
     // });
     // make a fetch post request with the params data
 
-    await Axios.post(currentUrl, params).then((res) => {
-      // if res.data[0][]
-      // if res data is there then ;
-      if (res.data["error"]) {
-        alert(res.data["error"]);
-      } else {
-        alert("Register Successful");
-        // $("#registerModal").modal("hide");
+    await Axios.post(currentUrl, params, { withCredentials: true }).then(
+      (res) => {
+        // if res.data[0][]
+        // if res data is there then ;
+        if (res.data["error"]) {
+          alert(res.data["error"]);
+        } else {
+          alert("Register Successful");
+          // $("#registerModal").modal("hide");
+        }
       }
-    });
+    );
   };
 
   // QUESTION
@@ -188,6 +226,7 @@ function LoginComponent(props) {
           </Group2Stack>
         </Group>
       </Container>
+      <button onClick={handleTest}>Test</button>
     </>
   );
 }
