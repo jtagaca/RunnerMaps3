@@ -7,6 +7,7 @@ import $ from "jquery";
 import { useNavigate } from "react-router-dom";
 
 function LoginComponent(props) {
+  Axios.defaults.withCredentials = true;
   // const
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
