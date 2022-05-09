@@ -1,0 +1,16 @@
+-------------------- Auto-Git Log --------------------
+		Sun May 08 2022 17:23:28 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* src/screens/admin.js
+
+
+Created files:
+* .autogit/logs/log-8-4-2022-16-53-19.txt
+
+
+Deleted files:
+
+
+Renamed files:
