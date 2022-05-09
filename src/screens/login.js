@@ -22,18 +22,35 @@ function LoginComponent(props) {
   const handleTest = async () => {
     const params = new URLSearchParams();
     params.append("Test", true);
-    await Axios.post(currentUrl, params, { withCredentials: true }).then(
-      (res) => {
-        // if res.data[0][]
-        // if res data is there then ;
-        console.log(res.data);
-        if (res.data["error"]) {
-          alert(res.data["error"]);
-        } else {
-          // $("#registerModal").modal("hide");
-        }
-      }
-    );
+    // await Axios.post(currentUrl, params, { withCredentials: true }).then(
+    //   (res) => {
+    //     // if res.data[0][]
+    //     // if res data is there then ;
+    //     console.log(res.data);
+    //     if (res.data["error"]) {
+    //       alert(res.data["error"]);
+    //     } else {
+    //       // $("#registerModal").modal("hide");
+    //     }
+    //   }
+    // );
+    fetch(currentUrl, {
+      method: "POST", // or 'PUT'
+      // mode: "same-origin",
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json", // sent request (alt: 'application/x-www-form-urlencoded')
+        Accept: "application/json", // expected data sent back
+      },
+      body: JSON.stringify(params),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const handleGetTest = async () => {
