@@ -22,18 +22,18 @@ function LoginComponent(props) {
   const handleTest = async () => {
     const params = new URLSearchParams();
     params.append("Test", true);
-    // await Axios.post(currentUrl, params, { withCredentials: true }).then(
-    //   (res) => {
-    //     // if res.data[0][]
-    //     // if res data is there then ;
-    //     console.log(res.data);
-    //     if (res.data["error"]) {
-    //       alert(res.data["error"]);
-    //     } else {
-    //       // $("#registerModal").modal("hide");
-    //     }
-    //   }
-    // );
+    await Axios.post(currentUrl, params, { withCredentials: false }).then(
+      (res) => {
+        // if res.data[0][]
+        // if res data is there then ;
+        console.log(res.data);
+        if (res.data["error"]) {
+          alert(res.data["error"]);
+        } else {
+          // $("#registerModal").modal("hide");
+        }
+      }
+    );
     fetch(currentUrl, {
       method: "POST", // or 'PUT'
       // mode: "same-origin",
