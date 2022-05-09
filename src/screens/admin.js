@@ -114,7 +114,6 @@ function MyVerticallyCenteredModal(props) {
       data: qs.stringify(obj),
       dataType: "JSON",
       withcredentials: true,
-      credentials: "same-origin",
     }).then((res) => {
       if (res.data["error"]) {
         alert(res.data["error"]);
