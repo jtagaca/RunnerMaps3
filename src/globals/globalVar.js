@@ -3,7 +3,7 @@ import { createGlobalState } from "react-hooks-global-state";
 import React from "react";
 
 const { setGlobalState, useGlobalState } = createGlobalState({
-  defaultUrl: "https://cs.csub.edu/~jtagaca/test/index.php",
+  defaultUrl: "http://localhost:8000/index.php",
   users: [],
 });
 
