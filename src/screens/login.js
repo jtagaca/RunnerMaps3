@@ -39,7 +39,7 @@ function LoginComponent(props) {
     const params = new URLSearchParams();
     params.append("Test", true);
     params.append("session_id", localStorage.getItem("session_id"));
-    await Axios.post("/test", params, { withCredentials: true }).then((res) => {
+    await Axios.post(currentUrl, params, { withCredentials: true }).then((res) => {
       // if res.data[0][]
       // if res data is there then ;
       console.log(res.data);
@@ -50,7 +50,7 @@ function LoginComponent(props) {
         localStorage.setItem("session_id", res.data["session"]);
       }
     });
-  };
+  };s
 
   const handleGetTestSession = async () => {
     const params = new URLSearchParams();
@@ -129,7 +129,7 @@ function LoginComponent(props) {
     params.append("email", email);
     params.append("password", password);
 
-    await Axios.post("/login", params, { withCredentials: true }).then(
+    await Axios.post(currentUrl, params, { withCredentials: false }).then(
       (response) => {
         console.log(response.data);
         if (response.data["error"]) {
@@ -248,6 +248,7 @@ function LoginComponent(props) {
             ></MaterialCardBasic>
           </Group2Stack>
         </Group>
+        <button onClick={te}
       </Container>
     </>
   );
