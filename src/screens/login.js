@@ -22,23 +22,40 @@ function LoginComponent(props) {
   const handleTest = async () => {
     const params = new URLSearchParams();
     params.append("Test", true);
-    await Axios.post(currentUrl, params, { withCredentials: true }).then(
-      (res) => {
-        // if res.data[0][]
-        // if res data is there then ;
-        console.log(res.data);
-        if (res.data["error"]) {
-          alert(res.data["error"]);
-        } else {
-          // $("#registerModal").modal("hide");
-        }
+    await Axios.post("/test", params, { withCredentials: true }).then((res) => {
+      // if res.data[0][]
+      // if res data is there then ;
+      console.log(res.data);
+      if (res.data["error"]) {
+        alert(res.data["error"]);
+      } else {
+        localStorage.setItem("session_id", res.data["session"]);
+        console.log(res.data["session"]);
       }
-    );
+    });
   };
 
   const handleGetTest = async () => {
     const params = new URLSearchParams();
     params.append("Test", true);
+    params.append("session_id", localStorage.getItem("session_id"));
+    await Axios.post("/test", params, { withCredentials: true }).then((res) => {
+      // if res.data[0][]
+      // if res data is there then ;
+      console.log(res.data);
+      if (res.data["error"]) {
+        alert(res.data["error"]);
+      } else {
+        // $("#registerModal").modal("hide");
+        localStorage.setItem("session_id", res.data["session"]);
+      }
+    });
+  };
+
+  const handleGetTestSession = async () => {
+    const params = new URLSearchParams();
+    params.append("Test", true);
+    params.append("session_id", localStorage.getItem("session_id"));
     await Axios.post(currentUrl, params, { withCredentials: true }).then(
       (res) => {
         // if res.data[0][]
@@ -48,6 +65,7 @@ function LoginComponent(props) {
           alert(res.data["error"]);
         } else {
           // $("#registerModal").modal("hide");
+          // localStorage.setItem("session_id", res.data["session_id"]);
         }
       }
     );
@@ -110,24 +128,26 @@ function LoginComponent(props) {
     params.append("email", email);
     params.append("password", password);
 
-    await Axios.post(currentUrl, params).then((response) => {
-      if (response.data["error"]) {
-        alert(response.data["error"]);
-      } else {
-        //
-        console.log(response.data);
-        localStorage.setItem("session_id", response.data["session_id"]);
-        localStorage.setItem("role", response.data["role"]);
-        if (response.data["role"] == "admin") {
-          navigate("/admin");
+    await Axios.post("/login", params, { withCredentials: true }).then(
+      (response) => {
+        if (response.data["error"]) {
+          alert(response.data["error"]);
         } else {
-          navigate("/user");
+          //
+          console.log(response.data);
+          localStorage.setItem("session_id", response.data["session_id"]);
+          localStorage.setItem("role", response.data["role"]);
+          if (response.data["role"] == "admin") {
+            navigate("/admin");
+          } else {
+            navigate("/user");
+          }
+          //     // setLoginStatus(response.data[0].username);
+          //     // check the role here
+          // then on the admin page have a use effect check if this guy actually has the correct session
         }
-        //     // setLoginStatus(response.data[0].username);
-        //     // check the role here
-        // then on the admin page have a use effect check if this guy actually has the correct session
       }
-    });
+    );
   };
   //login validator
   const loginValidate = () => {
@@ -227,7 +247,6 @@ function LoginComponent(props) {
           </Group2Stack>
         </Group>
       </Container>
-      <button onClick={handleTest}>Test</button>
     </>
   );
 }

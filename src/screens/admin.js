@@ -245,22 +245,24 @@ function Admin() {
     // jtagaca0012@csub.edu
     // tagaca12
 
-    let temp = [];
-    Axios.post(currentUrl, params).then((res) => {
-      // if res.data[0][]
-      // if res data is there then ;
-      if (res.data["error"]) {
-        alert(res.data["error"]);
-      } else {
-        // alert("Register Successful");
-        //
-        setRooms(res.data);
-        //
-        // works
-        // temp = res.data;
-        // works
+    Axios.post("/getAllRooms", params, { withCredentials: true }).then(
+      (res) => {
+        // if res.data[0][]
+        // console.log(res.data);
+        // if res data is there then ;
+        if (res.data["error"]) {
+          alert(res.data["error"]);
+        } else {
+          // alert("Register Successful");
+          //
+          setRooms(res.data);
+          //
+          // works
+          // temp = res.data;
+          // works
+        }
       }
-    });
+    );
     // TODO not very efficient
     //
   };
@@ -289,17 +291,22 @@ function Admin() {
     params.append("room_type", modalData.category_id);
     params.append("lapentor_url", lapentorUrl);
     params.append("map_url", Map_Url);
+    params.append("session_id", localStorage.getItem("session_id"));
+    params.append("role", localStorage.getItem("role"));
     //
     //
 
     // make a post request with the paramaters above
-    await Axios.post(currentUrl, params).then((res) => {
-      if (res.data["error"]) {
-        alert(res.data["error"]);
-      } else {
-        alert("Update Successful");
+    await Axios.post("/updateRoom", params, { withCredentials: true }).then(
+      (res) => {
+        console.log(res.data);
+        if (res.data["error"]) {
+          alert(res.data["error"]);
+        } else {
+          alert("Update Successful");
+        }
       }
-    });
+    );
 
     getAllRooms();
   };
