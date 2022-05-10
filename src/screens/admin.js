@@ -110,11 +110,12 @@ function MyVerticallyCenteredModal(props) {
 
     await Axios({
       method: "post",
-      url: currentUrl,
+      url: "/AddNewRoom",
       data: qs.stringify(obj),
       dataType: "JSON",
       withcredentials: true,
     }).then((res) => {
+      console.log(res);
       if (res.data["error"]) {
         alert(res.data["error"]);
       } else {
@@ -319,12 +320,13 @@ function Admin() {
 
   const handleLogOut = () => {
     const params = new URLSearchParams();
-    params.append("GetAllRooms", true);
+    params.append("Logout", true);
     params.append("session_id", localStorage.getItem("session_id"));
     localStorage.clear();
-    Axios.post(currentUrl, params).then((res) => {
+    Axios.post("/logout", params, { withCredentials: true }).then((res) => {
       // if res.data[0][]
       // if res data is there then ;
+      console.log(res.data);
       if (res.data["error"]) {
         alert(res.data["error"]);
       } else {

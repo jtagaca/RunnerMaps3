@@ -106,9 +106,10 @@ function LoginComponent(props) {
     // });
     // make a fetch post request with the params data
 
-    await Axios.post(currentUrl, params, { withCredentials: true }).then(
+    await Axios.post("/register", params, { withCredentials: true }).then(
       (res) => {
         // if res.data[0][]
+        console.log(res.data);
         // if res data is there then ;
         if (res.data["error"]) {
           alert(res.data["error"]);

@@ -56,7 +56,6 @@ function User(props) {
     { value: "vanilla", label: "Vanilla" },
   ];
   const getAllRooms = async () => {
-    count += 1;
     const params = new URLSearchParams();
     params.append("GetAllRooms", true);
     params.append("session_id", localStorage.getItem("session_id"));
@@ -71,31 +70,30 @@ function User(props) {
     // jtagaca0012@csub.edu
     // tagaca12
 
-    await Axios.post(currentUrl, params).then((res) => {
-      // if res.data[0][]
-      // if res data is there then ;
-      if (res.data["error"]) {
-        alert(res.data["error"]);
-      } else {
-        // alert("Register Successful");
-        //
-        setRooms(res.data);
-        setTempArry(res.data);
-        setOptions("");
+    await Axios.post("/getAllRooms", params, { withCredentials: true }).then(
+      (res) => {
+        if (res.data["error"]) {
+          alert(res.data["error"]);
+        } else {
+          // alert("Register Successful");
+          //
+          setRooms(res.data);
+          setTempArry(res.data);
 
-        setOptions(
-          res.data.map((opt) => ({
-            label: opt.RoomNumber + " " + opt.Department,
-            value: opt.RoomNumber + " " + opt.Department,
-          }))
-        );
-        setOptions((oldArray) => ["", ...oldArray]);
-        //
-        // works
-        // temp = res.data;
-        // works
+          setOptions(
+            res.data.map((opt) => ({
+              label: opt.RoomNumber + " " + opt.Department,
+              value: opt.RoomNumber + " " + opt.Department,
+            }))
+          );
+          setOptions((oldArray) => ["", ...oldArray]);
+          //
+          // works
+          // temp = res.data;
+          // works
+        }
       }
-    });
+    );
 
     // TODO not very efficient
     //
@@ -103,12 +101,13 @@ function User(props) {
 
   const handleLogOut = () => {
     const params = new URLSearchParams();
-    params.append("GetAllRooms", true);
+    params.append("Logout", true);
     params.append("session_id", localStorage.getItem("session_id"));
     localStorage.clear();
-    Axios.post(currentUrl, params).then((res) => {
+    Axios.post("/logout", params, { withCredentials: true }).then((res) => {
       // if res.data[0][]
       // if res data is there then ;
+      console.log(res.data);
       if (res.data["error"]) {
         alert(res.data["error"]);
       } else {
