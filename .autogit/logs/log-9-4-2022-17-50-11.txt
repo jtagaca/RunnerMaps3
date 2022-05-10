@@ -1,0 +1,20 @@
+-------------------- Auto-Git Log --------------------
+		Mon May 09 2022 17:50:11 GMT-0700 (Pacific Daylight Time)
+------------------------------------------------------
+
+Modified files:
+* package-lock.json
+* package.json
+* src/screens/admin.js
+* src/screens/login.js
+
+
+Created files:
+* .autogit/logs/log-9-4-2022-16-39-41.txt
+* src/setupProxy.js
+
+
+Deleted files:
+
+
+Renamed files:
