@@ -131,6 +131,7 @@ function LoginComponent(props) {
 
     await Axios.post("/login", params, { withCredentials: true }).then(
       (response) => {
+        console.log(response.data);
         if (response.data["error"]) {
           alert(response.data["error"]);
         } else {
