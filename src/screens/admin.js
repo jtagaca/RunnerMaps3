@@ -1,10 +1,12 @@
 import React, { Component, useState, useEffect } from "react";
+import "./style/style.css";
 import { useNavigate } from "react-router-dom";
 import qs from "qs";
 import Modal from "react-bootstrap/Modal";
 import CreateIcon from "@material-ui/icons/Create";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { Dropdown, Row, Col, Table } from "react-bootstrap";
+import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
 import {
   Box,
@@ -198,8 +200,10 @@ function MyVerticallyCenteredModal(props) {
         </Modal.Body>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
-        <Button variant="primary" onClick={handleAddRoom}>
+        <Button className="btns" onClick={props.onHide}>
+          Close
+        </Button>
+        <Button className="btns" variant="primary" onClick={handleAddRoom}>
           Submit
         </Button>
       </Modal.Footer>
@@ -338,159 +342,188 @@ function Admin() {
 
   return (
     <>
-      <Button onClick={handleLogOut}>Logout</Button>
-      <div>
-        <MyVerticallyCenteredModal
-          show={modalShow}
-          onHide={() => setModalShow(false)}
-        />
-        <TableBody>
-          <Box margin={1}>
-            <TableRow align="center"> </TableRow>
+      <Container>
+        <Rect>
+          <Button className="btns" onClick={handleLogOut}>
+            Logout
+          </Button>
+          <div>
+            <MyVerticallyCenteredModal
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
+            <TableBody>
+              <Box margin={1}>
+                <TableRow align="center"> </TableRow>
 
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Room</TableCell>
-                  <TableCell>Department</TableCell>
-                  <TableCell>Lapentor URL</TableCell>
-                  <TableCell> Category</TableCell>
-                  <TableCell> Map URL</TableCell>
-                  <TableCell> Update</TableCell>
-                  <Button
-                    onClick={() => {
-                      setModalShow(!modalShow);
-                    }}
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Room</TableCell>
+                      <TableCell>Department</TableCell>
+                      <TableCell>Lapentor URL</TableCell>
+                      <TableCell> Category</TableCell>
+                      <TableCell> Map URL</TableCell>
+                      <TableCell> Update</TableCell>
+                      <Button
+                        className="btns"
+                        variant="primary"
+                        onClick={() => {
+                          setModalShow(!modalShow);
+                        }}
+                      >
+                        <TableCell> Add New Room</TableCell>
+                      </Button>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {/* Add a building name as well */}
+                    {rooms &&
+                      rooms.map((room) => {
+                        return (
+                          <tr key={room.RoomNumber + room.Department}>
+                            <td>{room.RoomNumber}</td>
+                            <td>{room.Department}</td>
+                            {room.Lapentor_Url &&
+                            room.Lapentor_Url != null &&
+                            room.Lapentor_Url != "" &&
+                            room.Lapentor_Url != "undefined" ? (
+                              <td>
+                                <a target="_blank" href={room.Lapentor_Url}>
+                                  <Button className="btns">Indoor URL</Button>
+                                </a>
+                              </td>
+                            ) : (
+                              <td>No URL set</td>
+                            )}
+                            {room.category_id &&
+                            (room.category_id != null) |
+                              (room.category_id != "") ? (
+                              <td>{room.category_id}</td>
+                            ) : (
+                              <td>Not set</td>
+                            )}
+
+                            {room.Map_URL != "" &&
+                            room.Map_URL != null &&
+                            room.Map_URL != "undefined" ? (
+                              <td>
+                                <a target="_blank" href={room.Map_URL}>
+                                  <Button className="btns">
+                                    Directions to the Building
+                                  </Button>
+                                </a>
+                              </td>
+                            ) : (
+                              <td>Not set</td>
+                            )}
+
+                            <td>
+                              <Button className="btns">
+                                onClick=
+                                {() => {
+                                  setModalData(room);
+                                  handleShow();
+                                  setCategory(room.Category);
+                                  setLapentorUrl(room.Lapentor_Url);
+                                  setMapUrl(room.Map_Url);
+                                }}
+                                > Update
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </Box>
+            </TableBody>
+            {/* Todo modal imperfections like undefined */}
+            {modalData ? (
+              <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                  <Modal.Title>
+                    {modalData.RoomNumber + " " + modalData.Department}
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {/* TODO add more options */}
+                  <DropdownButton
+                    alignRight
+                    title={categoryMap[modalData.category_id]}
+                    id="dropdown-menu-align-right"
+                    onSelect={handleSelect}
                   >
-                    <TableCell> Add New Room</TableCell>
+                    <Dropdown.Item eventKey="1" value="Tutoring Center">
+                      Tutoring Center
+                    </Dropdown.Item>
+                    <Dropdown.Item eventKey="2" value="Health Services">
+                      Health Services
+                    </Dropdown.Item>
+                    <Dropdown.Item eventKey="3" value="Club">
+                      Club
+                    </Dropdown.Item>
+                  </DropdownButton>
+                  <Form>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                      <Form.Label>Lapentor URL</Form.Label>
+                      <Form.Control
+                        placeholder="http://"
+                        onChange={(e) => {
+                          setLapentorUrl(e.target.value);
+                        }}
+                        defaultValue={modalData.Lapentor_Url}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>Map URL</Form.Label>
+                      <Form.Control
+                        placeholder="http://"
+                        onChange={(e) => {
+                          setMapUrl(e.target.value);
+                        }}
+                        defaultValue={modalData.Map_URL}
+                      />
+                    </Form.Group>
+                  </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    className="btns"
+                    variant="secondary"
+                    onClick={handleClose}
+                  >
+                    Close
                   </Button>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {/* Add a building name as well */}
-                {rooms &&
-                  rooms.map((room) => {
-                    return (
-                      <tr key={room.RoomNumber + room.Department}>
-                        <td>{room.RoomNumber}</td>
-                        <td>{room.Department}</td>
-                        {room.Lapentor_Url &&
-                        room.Lapentor_Url != null &&
-                        room.Lapentor_Url != "" &&
-                        room.Lapentor_Url != "undefined" ? (
-                          <td>
-                            <a target="_blank" href={room.Lapentor_Url}>
-                              <button>Indoor URL</button>
-                            </a>
-                          </td>
-                        ) : (
-                          <td>No URL set</td>
-                        )}
-                        {room.category_id &&
-                        (room.category_id != null) |
-                          (room.category_id != "") ? (
-                          <td>{room.category_id}</td>
-                        ) : (
-                          <td>Not set</td>
-                        )}
-
-                        {room.Map_URL != "" &&
-                        room.Map_URL != null &&
-                        room.Map_URL != "undefined" ? (
-                          <td>
-                            <a target="_blank" href={room.Map_URL}>
-                              <button>Directions to the Building</button>
-                            </a>
-                          </td>
-                        ) : (
-                          <td>Not set</td>
-                        )}
-
-                        <td>
-                          <button
-                            onClick={() => {
-                              setModalData(room);
-                              handleShow();
-                              setCategory(room.Category);
-                              setLapentorUrl(room.Lapentor_Url);
-                              setMapUrl(room.Map_Url);
-                            }}
-                          >
-                            Update
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </Box>
-        </TableBody>
-        {/* Todo modal imperfections like undefined */}
-        {modalData ? (
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-              <Modal.Title>
-                {modalData.RoomNumber + " " + modalData.Department}
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {/* TODO add more options */}
-              <DropdownButton
-                alignRight
-                title={categoryMap[modalData.category_id]}
-                id="dropdown-menu-align-right"
-                onSelect={handleSelect}
-              >
-                <Dropdown.Item eventKey="1" value="Tutoring Center">
-                  Tutoring Center
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="2" value="Health Services">
-                  Health Services
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="3" value="Club">
-                  Club
-                </Dropdown.Item>
-              </DropdownButton>
-              <Form>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label>Lapentor URL</Form.Label>
-                  <Form.Control
-                    placeholder="http://"
-                    onChange={(e) => {
-                      setLapentorUrl(e.target.value);
-                    }}
-                    defaultValue={modalData.Lapentor_Url}
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Map URL</Form.Label>
-                  <Form.Control
-                    placeholder="http://"
-                    onChange={(e) => {
-                      setMapUrl(e.target.value);
-                    }}
-                    defaultValue={modalData.Map_URL}
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" onClick={handleUpdateSubmit}>
-                Submit
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        ) : null}
-
-        {/* <button onClick={showLog}>Log</button> */}
-      </div>
+                  <Button
+                    className="btns"
+                    variant="primary"
+                    onClick={handleUpdateSubmit}
+                  >
+                    Submit
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            ) : null}
+            {/* <Button className="btns"  onClick={showLog}>Log</button> */}
+          </div>
+        </Rect>
+      </Container>
     </>
   );
 }
+const Container = styled.div`
+  display: flex;
+  background-color: rgba(248, 231, 28, 1);
+  flex-direction: column;
+
+  width: 100vw;
+`;
+
+const Rect = styled.div`
+  background-color: rgba(248, 231, 28, 1);
+  align-self: center;
+`;
 
 export default Admin;

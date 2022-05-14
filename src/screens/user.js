@@ -1,6 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import Select from "react-select";
 import { Dropdown, Row, Col, Table } from "react-bootstrap";
+import "./style/style.css";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { setGlobalState, useGlobalState } from "../globals/globalVar";
 import styled, { css } from "styled-components";
