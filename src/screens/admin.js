@@ -3,53 +3,21 @@ import "./style/style.css";
 import { useNavigate } from "react-router-dom";
 import qs from "qs";
 import Modal from "react-bootstrap/Modal";
-import CreateIcon from "@material-ui/icons/Create";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import { Dropdown, Row, Col, Table } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
-import {
-  Box,
-  Button,
-  Snackbar,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@material-ui/core";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import AddBoxIcon from "@material-ui/icons/AddBox";
+import { Box, Button } from "@material-ui/core";
+
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import Axios from "axios";
 import { setGlobalState, useGlobalState } from "../globals/globalVar";
-import DoneIcon from "@material-ui/icons/Done";
-import ClearIcon from "@material-ui/icons/Clear";
-import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
 
 // Creating styles
-const useStyles = makeStyles({
-  root: {
-    "& > *": {
-      borderBottom: "unset",
-    },
-  },
-  table: {
-    minWidth: 650,
-  },
-  snackbar: {
-    bottom: "104px",
-  },
-});
-const Rooms = [];
 
 function MyVerticallyCenteredModal(props) {
   const url = useGlobalState("defaultUrl");
-  const users = useGlobalState("users");
 
   var initialState = {
     room_number: "",
@@ -200,10 +168,8 @@ function MyVerticallyCenteredModal(props) {
         </Modal.Body>
       </Modal.Body>
       <Modal.Footer>
-        <Button className="btns" onClick={props.onHide}>
-          Close
-        </Button>
-        <Button className="btns" variant="primary" onClick={handleAddRoom}>
+        <Button onClick={props.onHide}>Close</Button>
+        <Button variant="primary" onClick={handleAddRoom}>
           Submit
         </Button>
       </Modal.Footer>
@@ -218,8 +184,6 @@ function Admin() {
   var currentUrl = url[0];
   // make a map look up for the category with the key being the catgegory_id
   var categoryMap = { 1: "Tutoring Center", 2: "Health Services", 3: "Club" };
-  var currentUsers = users[0];
-  var array = [];
 
   // Creating style object
 
@@ -344,100 +308,90 @@ function Admin() {
     <>
       <Container>
         <Rect>
-          <Button className="btns" onClick={handleLogOut}>
-            Logout
-          </Button>
+          <Button onClick={handleLogOut}>Logout</Button>
           <div>
             <MyVerticallyCenteredModal
               show={modalShow}
               onHide={() => setModalShow(false)}
             />
-            <TableBody>
-              <Box margin={1}>
-                <TableRow align="center"> </TableRow>
+            <Box margin={1}>
+              <Table>
+                <Thead>
+                  <Tr>
+                    <Th style={{ margin: "10px" }}>Room</Th>
+                    <Th>Department</Th>
+                    <Th>Lapentor URL</Th>
+                    <Th> Category</Th>
+                    <Th> Map URL</Th>
+                    <Th> Update</Th>
+                    <Button
+                      variant="primary"
+                      style={{ background_color: "rgba(74,144,226,1)" }}
+                      onClick={() => {
+                        setModalShow(!modalShow);
+                      }}
+                    >
+                      <Th> Add New Room</Th>
+                    </Button>
+                  </Tr>
+                </Thead>
+                {/* Add a building name as well */}
+                {rooms &&
+                  rooms.map((room) => {
+                    return (
+                      <Tr key={room.RoomNumber + room.Department}>
+                        <Td>{room.RoomNumber}</Td>
+                        <Td>{room.Department}</Td>
+                        {room.Lapentor_Url &&
+                        room.Lapentor_Url != null &&
+                        room.Lapentor_Url != "" &&
+                        room.Lapentor_Url != "undefined" ? (
+                          <Td>
+                            <a target="_blank" href={room.Lapentor_Url}>
+                              <Button className="myButton">Indoor URL</Button>
+                            </a>
+                          </Td>
+                        ) : (
+                          <Td>No URL set</Td>
+                        )}
+                        {room.category_id &&
+                        (room.category_id != null) |
+                          (room.category_id != "") ? (
+                          <Td>{room.category_id}</Td>
+                        ) : (
+                          <Td>Not set</Td>
+                        )}
 
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Room</TableCell>
-                      <TableCell>Department</TableCell>
-                      <TableCell>Lapentor URL</TableCell>
-                      <TableCell> Category</TableCell>
-                      <TableCell> Map URL</TableCell>
-                      <TableCell> Update</TableCell>
-                      <Button
-                        className="btns"
-                        variant="primary"
-                        onClick={() => {
-                          setModalShow(!modalShow);
-                        }}
-                      >
-                        <TableCell> Add New Room</TableCell>
-                      </Button>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {/* Add a building name as well */}
-                    {rooms &&
-                      rooms.map((room) => {
-                        return (
-                          <tr key={room.RoomNumber + room.Department}>
-                            <td>{room.RoomNumber}</td>
-                            <td>{room.Department}</td>
-                            {room.Lapentor_Url &&
-                            room.Lapentor_Url != null &&
-                            room.Lapentor_Url != "" &&
-                            room.Lapentor_Url != "undefined" ? (
-                              <td>
-                                <a target="_blank" href={room.Lapentor_Url}>
-                                  <Button className="btns">Indoor URL</Button>
-                                </a>
-                              </td>
-                            ) : (
-                              <td>No URL set</td>
-                            )}
-                            {room.category_id &&
-                            (room.category_id != null) |
-                              (room.category_id != "") ? (
-                              <td>{room.category_id}</td>
-                            ) : (
-                              <td>Not set</td>
-                            )}
+                        {room.Map_URL != "" &&
+                        room.Map_URL != null &&
+                        room.Map_URL != "undefined" ? (
+                          <Td>
+                            <a target="_blank" href={room.Map_URL}>
+                              <Button>Directions to the Building</Button>
+                            </a>
+                          </Td>
+                        ) : (
+                          <Td>Not set</Td>
+                        )}
 
-                            {room.Map_URL != "" &&
-                            room.Map_URL != null &&
-                            room.Map_URL != "undefined" ? (
-                              <td>
-                                <a target="_blank" href={room.Map_URL}>
-                                  <Button className="btns">
-                                    Directions to the Building
-                                  </Button>
-                                </a>
-                              </td>
-                            ) : (
-                              <td>Not set</td>
-                            )}
-
-                            <td>
-                              <Button className="btns">
-                                onClick=
-                                {() => {
-                                  setModalData(room);
-                                  handleShow();
-                                  setCategory(room.Category);
-                                  setLapentorUrl(room.Lapentor_Url);
-                                  setMapUrl(room.Map_Url);
-                                }}
-                                > Update
-                              </Button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              </Box>
-            </TableBody>
+                        <Td>
+                          <Button
+                            onClick={() => {
+                              setModalData(room);
+                              handleShow();
+                              setCategory(room.Category);
+                              setLapentorUrl(room.Lapentor_Url);
+                              setMapUrl(room.Map_Url);
+                            }}
+                          >
+                            Update
+                          </Button>
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+              </Table>
+            </Box>
             {/* Todo modal imperfections like undefined */}
             {modalData ? (
               <Modal show={show} onHide={handleClose}>
@@ -489,24 +443,16 @@ function Admin() {
                   </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                  <Button
-                    className="btns"
-                    variant="secondary"
-                    onClick={handleClose}
-                  >
+                  <Button variant="secondary" onClick={handleClose}>
                     Close
                   </Button>
-                  <Button
-                    className="btns"
-                    variant="primary"
-                    onClick={handleUpdateSubmit}
-                  >
+                  <Button variant="primary" onClick={handleUpdateSubmit}>
                     Submit
                   </Button>
                 </Modal.Footer>
               </Modal>
             ) : null}
-            {/* <Button className="btns"  onClick={showLog}>Log</button> */}
+            {/* <button onClick={showLog}>Log</button> */}
           </div>
         </Rect>
       </Container>
@@ -517,7 +463,7 @@ const Container = styled.div`
   display: flex;
   background-color: rgba(248, 231, 28, 1);
   flex-direction: column;
-
+  height: 100vh;
   width: 100vw;
 `;
 
