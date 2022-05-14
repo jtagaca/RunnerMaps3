@@ -5,8 +5,8 @@ import { setGlobalState, useGlobalState } from "../globals/globalVar";
 import Axios from "axios";
 import $ from "jquery";
 import { useNavigate } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
-import Button from "@mui/material/Button";
+
+import { TextField } from "@mui/material/FormControl";
 function LoginComponent(props) {
   Axios.defaults.withCredentials = true;
   // const
@@ -180,19 +180,19 @@ function LoginComponent(props) {
                 Register
               </h4>
             </div>
-            {/* make an TextField for email and password */}
-            <TextField
+            {/* make an input for email and password */}
+            <input
               type="email"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
             />
-            <TextField
+            <input
               type="password"
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
             {/* button for submit */}
-            <Button onClick={handleSubmit}>Submit</Button>
+            <button onClick={handleSubmit}>Submit</button>
             <div class="modal-body"></div>
           </div>
         </div>
@@ -204,34 +204,34 @@ function LoginComponent(props) {
               <Group3>
                 <Rect>
                   <Rect2>
-                    <TextField
+                    <input
                       placeholder="Email"
                       onChange={(e) => {
                         setEmail(e.target.value);
                       }}
-                    ></TextField>
+                    ></input>
                   </Rect2>
                   <Rect3>
-                    <TextField
+                    <input
                       type="password"
                       placeholder="Password"
                       onChange={(e) => {
                         setPassword(e.target.value);
                       }}
-                    ></TextField>
+                    ></input>
                   </Rect3>
                   <Rect4>
-                    <Button
+                    <button
                       type="button"
                       class="btn btn-demo"
                       data-toggle="modal"
                       data-target="#registerModal"
                     >
                       Register
-                    </Button>
+                    </button>
                   </Rect4>
                   <Rect5>
-                    <Button onClick={login}>Login</Button>
+                    <button onClick={login}>Login</button>
                   </Rect5>
                 </Rect>
               </Group3>
@@ -312,7 +312,7 @@ const Rect2 = styled.div`
   box-shadow: 3px 3px 0px 1px rgba(0, 0, 0, 1);
 `;
 
-const TextInput = styled.TextField`
+const TextInput = styled.input`
   font-family: Roboto;
   font-style: normal;
   font-weight: 400;
@@ -340,7 +340,7 @@ const Rect3 = styled.div`
   box-shadow: 3px 3px 0px 1px rgba(0, 0, 0, 1);
 `;
 
-const TextInput1 = styled.TextField`
+const TextInput1 = styled.input`
   font-family: Roboto;
   font-style: normal;
   font-weight: 400;
