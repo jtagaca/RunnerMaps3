@@ -36,13 +36,13 @@ As a result, this project necessitates creativity and critical thinking to solve
       </p>
 <p align="center" width="100%">
 <img
-      src="https://jtagaca.live/images/RunnerMaps4.gif"
+      src="/public/RunnerMaps4-2.gif"
       height=400px
    />
       </p>
 <p align="center" width="100%">
 <img
-      src="https://jtagaca.live/images/RunnerMaps5.gif"
+      src="public/RunnerMaps5.gif"
       height=400px
    />
     </p>
