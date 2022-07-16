@@ -18,6 +18,7 @@ As a result, this project necessitates creativity and critical thinking to solve
 <img
       src="https://jtagaca.live/images/RunnerMaps1.png"
       height=400px
+      width=300px
    />
       </p>
 
@@ -25,6 +26,7 @@ As a result, this project necessitates creativity and critical thinking to solve
    <img
       src="https://jtagaca.live/images/RunnerMaps2.png"
       height=400px
+      width=300px
    />
        </p>
 
