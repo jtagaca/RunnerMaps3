@@ -12,6 +12,21 @@ However, due to the lack of funding for this project, there is no hardware to mo
 As a result, this project necessitates creativity and critical thinking to solve a problem from a fresh perspective.
 
 
+ <img 
+      src="https://jtagaca.live/images/RunnerMaps1.png" 
+      height=400px 
+   />
+
+   <img 
+      src="https://jtagaca.live/images/RunnerMaps2.png" 
+      height=400px 
+   />
+   
+   <img 
+      src="https://jtagaca.live/images/RunnerMaps3.gif" 
+      height=400px 
+   />
+
 <img 
       src="/public/RunnerMaps4-2.gif" 
       height=400px 
@@ -22,12 +37,5 @@ As a result, this project necessitates creativity and critical thinking to solve
       height=400px 
    />
    
-   <img 
-      src="https://jtagaca.live/images/1ai.png" 
-      height=400px 
-   />
-
-   <img 
-      src="/public/4mv.png" 
-      height=200px 
-   />
+  
+   
