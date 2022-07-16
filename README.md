@@ -12,10 +12,13 @@ However, due to the lack of funding for this project, there is no hardware to mo
 As a result, this project necessitates creativity and critical thinking to solve a problem from a fresh perspective.
 
 
+<div style="text-align:center>
  <img 
       src="https://jtagaca.live/images/RunnerMaps1.png" 
       height=400px 
    />
+                 
+                                                       </div>
 
    <img 
       src="https://jtagaca.live/images/RunnerMaps2.png" 
