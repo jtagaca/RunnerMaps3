@@ -14,17 +14,17 @@ As a result, this project necessitates creativity and critical thinking to solve
 
 <img 
       src="/public/RunnerMaps4-2.gif" 
-      height=200px 
+      height=400px 
    />
 
 <img 
       src="/public/RunnerMaps5.gif" 
-      height=200px 
+      height=400px 
    />
    
    <img 
       src="https://jtagaca.live/images/1ai.png" 
-      height=200px 
+      height=400px 
    />
 
    <img 
