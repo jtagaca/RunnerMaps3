@@ -4,8 +4,7 @@ This is the prototype for the upcoming project that will address the most pressi
 
 ## Context
 
-This is a project for a course at my university; I created it in three weeks, so the user interface isn't great, but the functionality is fantastic. Furthermore, it demonstrates how navigation problems can be solved at CSUB, making it a prototype.
-This is a full-stack project with a PHP backend and a React front end. The database is hosted on a CSUB server and uses MySQL.
+This is a project for a course at my university; I created it in three weeks, so the user interface isn't great, but the functionality is fantastic. Furthermore, it demonstrates how navigation problems can be solved at CSUB, making it a prototype. This is a full-stack project with a PHP backend and a React front end. The database is hosted on a CSUB server and uses MySQL.
 
 ## Challenges
 
